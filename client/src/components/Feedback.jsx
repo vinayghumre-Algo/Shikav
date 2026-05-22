@@ -48,23 +48,23 @@ export default function Feedback() {
     setFormError('')
 
     const form = e.target
-    const data = new URLSearchParams(new FormData(form))
+    const data = { name: form.name.value, email: form.email.value, message: form.message.value }
 
     try {
-      const res = await fetch('/', {
+      const res = await fetch('/.netlify/functions/submit-feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: data.toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       })
-      if (res.ok) {
+      const result = await res.json()
+      if (res.ok && result.success) {
         setFormState('success')
         form.reset()
       } else {
-        const text = await res.text().catch(() => '')
-        throw new Error(text || res.statusText)
+        throw new Error(result.error || 'Submission failed')
       }
     } catch (err) {
-      setFormError('Could not submit. Make sure you are on the live site (Netlify Forms only works on the deployed domain).')
+      setFormError(err.message)
       setFormState('idle')
     }
   }
@@ -85,7 +85,7 @@ export default function Feedback() {
           <VisitorCounter />
           <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--color-text-muted)' }}>
             <span className="w-2 h-2 rounded-full bg-green-400" />
-            powered by Netlify Forms
+            stored securely
           </div>
         </div>
 
@@ -99,9 +99,7 @@ export default function Feedback() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} data-netlify="true" name="feedback" className="space-y-4">
-            <input type="hidden" name="form-name" value="feedback" />
-            <div hidden><input name="bot-field" /></div>
+          <form onSubmit={handleSubmit} className="space-y-4">
 
             <div>
               <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--color-text)' }}>
