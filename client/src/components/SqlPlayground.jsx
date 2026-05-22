@@ -53,7 +53,7 @@ export default function SqlPlayground({ selectedDbms, onClose }) {
   async function initDb() {
     try {
       const SQL = await initSqlJs({
-        locateFile: file => '/sql-wasm.wasm'
+        locateFile: file => 'https://cdn.jsdelivr.net/npm/sql.js@1.11.0/dist/sql-wasm.wasm'
       })
       const db = new SQL.Database()
       db.run(SEED_SQL)
