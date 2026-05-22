@@ -1,0 +1,1394 @@
+const categories = [
+  { name: 'SQL Basics', description: 'Fundamental SQL commands to get started with databases', icon: '🌱', level: 1, color: '#22c55e' },
+  { name: 'Intermediate SQL', description: 'Joins, subqueries, aggregation and grouping', icon: '⚡', level: 2, color: '#f59e0b' },
+  { name: 'Advanced SQL', description: 'Window functions, CTEs, optimization & complex queries', icon: '🚀', level: 3, color: '#ef4444' },
+  { name: 'Data Definition', description: 'CREATE, ALTER, DROP tables and schema design', icon: '🏗️', level: 1, color: '#3b82f6' },
+  { name: 'SQL Functions', description: 'String, date, numeric and aggregate functions', icon: '🔧', level: 2, color: '#8b5cf6' },
+  { name: 'SQL Interview Questions', description: 'Common SQL interview questions with answers and examples for 2026', icon: '🎯', level: 1, color: '#a855f7' },
+];
+
+const queries = [
+  // ════════════════════════════════════════════════════════════════
+  // SQL BASICS (category_id: 1)
+  // ════════════════════════════════════════════════════════════════
+  {
+    category_id: 1, title: 'SELECT * - Retrieve All Columns', description: 'Fetch every column and row from a table.',
+    sql_code: 'SELECT * FROM employees;',
+    mysql_code: 'SELECT * FROM employees;',
+    postgres_code: 'SELECT * FROM employees;',
+    oracle_code: 'SELECT * FROM employees;',
+    explanation: 'The asterisk (*) is a wildcard that returns all columns. This is the simplest query but should be used cautiously on large tables.',
+    result_example: '| id | name  | department | salary |\n|----|-------|-----------|--------|\n| 1  | Alice | Sales     | 50000  |\n| 2  | Bob   | IT        | 60000  |',
+    difficulty: 'basic',
+    question: 'Which SQL statement retrieves ALL columns from the employees table?',
+    question_answer: 'SELECT * FROM employees;'
+  },
+  {
+    category_id: 1, title: 'SELECT Specific Columns', description: 'Retrieve only the columns you need.',
+    sql_code: 'SELECT name, salary FROM employees;',
+    mysql_code: 'SELECT name, salary FROM employees;',
+    postgres_code: 'SELECT name, salary FROM employees;',
+    oracle_code: 'SELECT name, salary FROM employees;',
+    explanation: 'Explicitly naming columns is more efficient and readable than using *. Only the listed columns are returned.',
+    result_example: '| name  | salary |\n|-------|--------|\n| Alice | 50000  |\n| Bob   | 60000  |',
+    difficulty: 'basic',
+    question: 'How do you retrieve ONLY the name and salary columns from employees?',
+    question_answer: 'SELECT name, salary FROM employees;'
+  },
+  {
+    category_id: 1, title: 'WHERE Clause - Filtering', description: 'Filter results based on a condition.',
+    sql_code: 'SELECT * FROM employees WHERE salary > 55000;',
+    mysql_code: 'SELECT * FROM employees WHERE salary > 55000;',
+    postgres_code: 'SELECT * FROM employees WHERE salary > 55000;',
+    oracle_code: 'SELECT * FROM employees WHERE salary > 55000;',
+    explanation: 'WHERE filters rows before any grouping or ordering. Only rows satisfying the condition are included.',
+    result_example: '| id | name | department | salary |\n|----|------|-----------|--------|\n| 2  | Bob  | IT        | 60000  |',
+    difficulty: 'basic',
+    question: 'Which clause filters records based on a condition?',
+    question_answer: 'WHERE'
+  },
+  {
+    category_id: 1, title: 'AND / OR Operators', description: 'Combine multiple conditions in WHERE.',
+    sql_code: "SELECT * FROM employees WHERE department = 'IT' AND salary > 50000;",
+    mysql_code: "SELECT * FROM employees WHERE department = 'IT' AND salary > 50000;",
+    postgres_code: "SELECT * FROM employees WHERE department = 'IT' AND salary > 50000;",
+    oracle_code: "SELECT * FROM employees WHERE department = 'IT' AND salary > 50000;",
+    explanation: 'AND requires all conditions to be true; OR requires at least one.',
+    result_example: '| id | name | department | salary |\n|----|------|-----------|--------|\n| 2  | Bob  | IT        | 60000  |',
+    difficulty: 'basic',
+    question: 'Write a query to find employees in the IT department with salary over 50000.',
+    question_answer: "SELECT * FROM employees WHERE department = 'IT' AND salary > 50000;"
+  },
+  {
+    category_id: 1, title: 'ORDER BY - Sorting', description: 'Sort the result set by one or more columns.',
+    sql_code: 'SELECT name, salary FROM employees ORDER BY salary DESC;',
+    mysql_code: 'SELECT name, salary FROM employees ORDER BY salary DESC;',
+    postgres_code: 'SELECT name, salary FROM employees ORDER BY salary DESC;',
+    oracle_code: 'SELECT name, salary FROM employees ORDER BY salary DESC;',
+    explanation: 'ORDER BY sorts the final result. ASC (default) for ascending, DESC for descending.',
+    result_example: '| name  | salary |\n|-------|--------|\n| Bob   | 60000  |\n| Alice | 50000  |',
+    difficulty: 'basic',
+    question: 'How do you sort employees by salary from highest to lowest?',
+    question_answer: 'SELECT name, salary FROM employees ORDER BY salary DESC;'
+  },
+  {
+    category_id: 1, title: 'LIMIT / OFFSET - Pagination', description: 'Restrict the number of rows returned.',
+    sql_code: 'SELECT * FROM employees ORDER BY id LIMIT 2 OFFSET 1;',
+    mysql_code: 'SELECT * FROM employees ORDER BY id LIMIT 2 OFFSET 1;',
+    postgres_code: 'SELECT * FROM employees ORDER BY id LIMIT 2 OFFSET 1;',
+    oracle_code: 'SELECT * FROM employees ORDER BY id OFFSET 1 ROWS FETCH NEXT 2 ROWS ONLY;',
+    explanation: 'LIMIT restricts row count. OFFSET skips rows first. Great for pagination. Oracle uses FETCH NEXT syntax.',
+    result_example: '| id | name   | department | salary |\n|----|--------|-----------|--------|\n| 2  | Bob    | IT        | 60000  |\n| 3  | Charlie| HR        | 45000  |',
+    difficulty: 'basic',
+    question: 'Write a query to show 2 employees starting from the 2nd record.',
+    question_answer: 'SELECT * FROM employees ORDER BY id LIMIT 2 OFFSET 1;'
+  },
+  {
+    category_id: 1, title: 'DISTINCT - Unique Values', description: 'Return only distinct (unique) values.',
+    sql_code: 'SELECT DISTINCT department FROM employees;',
+    mysql_code: 'SELECT DISTINCT department FROM employees;',
+    postgres_code: 'SELECT DISTINCT department FROM employees;',
+    oracle_code: 'SELECT DISTINCT department FROM employees;',
+    explanation: 'DISTINCT removes duplicate rows from the result.',
+    result_example: '| department |\n|-----------|\n| Sales     |\n| IT        |\n| HR        |',
+    difficulty: 'basic',
+    question: 'How do you get a list of unique departments from employees?',
+    question_answer: 'SELECT DISTINCT department FROM employees;'
+  },
+  {
+    category_id: 1, title: 'INSERT - Add New Row', description: 'Insert a new record into a table.',
+    sql_code: "INSERT INTO employees (name, department, salary) VALUES ('David', 'Marketing', 52000);",
+    mysql_code: "INSERT INTO employees (name, department, salary) VALUES ('David', 'Marketing', 52000);",
+    postgres_code: "INSERT INTO employees (name, department, salary) VALUES ('David', 'Marketing', 52000) RETURNING id;",
+    oracle_code: "INSERT INTO employees (name, department, salary) VALUES ('David', 'Marketing', 52000);",
+    explanation: 'INSERT adds a new row. Column list is optional but recommended. PostgreSQL supports RETURNING to get back inserted data.',
+    result_example: '1 row inserted.\nPostgreSQL: id of new row returned.',
+    difficulty: 'basic',
+    question: 'Insert a new employee named David in Marketing with salary 52000.',
+    question_answer: "INSERT INTO employees (name, department, salary) VALUES ('David', 'Marketing', 52000);"
+  },
+  {
+    category_id: 1, title: 'UPDATE - Modify Data', description: 'Change values in existing rows.',
+    sql_code: "UPDATE employees SET salary = 55000 WHERE name = 'Alice';",
+    mysql_code: "UPDATE employees SET salary = 55000 WHERE name = 'Alice';",
+    postgres_code: "UPDATE employees SET salary = 55000 WHERE name = 'Alice' RETURNING *;",
+    oracle_code: "UPDATE employees SET salary = 55000 WHERE name = 'Alice';",
+    explanation: 'Always use WHERE with UPDATE, or ALL rows will be modified.',
+    result_example: '1 row updated.',
+    difficulty: 'basic',
+    question: 'Update Alice\'s salary to 55000.',
+    question_answer: "UPDATE employees SET salary = 55000 WHERE name = 'Alice';"
+  },
+  {
+    category_id: 1, title: 'DELETE - Remove Rows', description: 'Delete rows from a table.',
+    sql_code: 'DELETE FROM employees WHERE id = 3;',
+    mysql_code: 'DELETE FROM employees WHERE id = 3;',
+    postgres_code: 'DELETE FROM employees WHERE id = 3 RETURNING *;',
+    oracle_code: 'DELETE FROM employees WHERE id = 3;',
+    explanation: 'Always use WHERE with DELETE. Without it, the entire table is emptied.',
+    result_example: '1 row deleted.',
+    difficulty: 'basic',
+    question: 'Delete the employee with id = 3.',
+    question_answer: 'DELETE FROM employees WHERE id = 3;'
+  },
+
+  // ════════════════════════════════════════════════════════════════
+  // INTERMEDIATE SQL (category_id: 2)
+  // ════════════════════════════════════════════════════════════════
+  {
+    category_id: 2, title: 'INNER JOIN', description: 'Combine rows from two tables where a condition matches.',
+    sql_code: 'SELECT e.name, d.department_name\nFROM employees e\nINNER JOIN departments d ON e.department_id = d.id;',
+    mysql_code: 'SELECT e.name, d.department_name\nFROM employees e\nINNER JOIN departments d ON e.department_id = d.id;',
+    postgres_code: 'SELECT e.name, d.department_name\nFROM employees e\nINNER JOIN departments d ON e.department_id = d.id;',
+    oracle_code: 'SELECT e.name, d.department_name\nFROM employees e\nINNER JOIN departments d ON e.department_id = d.id;',
+    explanation: 'INNER JOIN returns only rows where the ON condition is met. Unmatched rows are excluded.',
+    result_example: '| name  | department_name |\n|-------|----------------|\n| Alice | Sales          |\n| Bob   | IT             |',
+    difficulty: 'intermediate',
+    question: 'Join employees with departments to show each employee\'s department name.',
+    question_answer: 'SELECT e.name, d.department_name FROM employees e INNER JOIN departments d ON e.department_id = d.id;'
+  },
+  {
+    category_id: 2, title: 'LEFT JOIN', description: 'All rows from left table, matched rows from right.',
+    sql_code: 'SELECT e.name, d.department_name\nFROM employees e\nLEFT JOIN departments d ON e.department_id = d.id;',
+    mysql_code: 'SELECT e.name, d.department_name\nFROM employees e\nLEFT JOIN departments d ON e.department_id = d.id;',
+    postgres_code: 'SELECT e.name, d.department_name\nFROM employees e\nLEFT JOIN departments d ON e.department_id = d.id;',
+    oracle_code: 'SELECT e.name, d.department_name\nFROM employees e\nLEFT JOIN departments d ON e.department_id = d.id;',
+    explanation: 'LEFT JOIN keeps ALL rows from the left table. If no match, NULLs are returned.',
+    result_example: '| name  | department_name |\n|-------|----------------|\n| Alice | Sales          |\n| Bob   | IT             |\n| Eve   | NULL           |',
+    difficulty: 'intermediate',
+    question: 'Show all employees and their departments, including those without a department.',
+    question_answer: 'SELECT e.name, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id = d.id;'
+  },
+  {
+    category_id: 2, title: 'RIGHT JOIN', description: 'All rows from right table, matched rows from left.',
+    sql_code: 'SELECT e.name, d.department_name\nFROM employees e\nRIGHT JOIN departments d ON e.department_id = d.id;',
+    mysql_code: 'SELECT e.name, d.department_name\nFROM employees e\nRIGHT JOIN departments d ON e.department_id = d.id;',
+    postgres_code: 'SELECT e.name, d.department_name\nFROM employees e\nRIGHT JOIN departments d ON e.department_id = d.id;',
+    oracle_code: 'SELECT e.name, d.department_name\nFROM employees e\nRIGHT JOIN departments d ON e.department_id = d.id;',
+    explanation: 'RIGHT JOIN is the opposite of LEFT JOIN. All right table rows are kept.',
+    result_example: '| name  | department_name |\n|-------|----------------|\n| Alice | Sales          |\n| Bob   | IT             |\n| NULL  | HR             |',
+    difficulty: 'intermediate',
+    question: 'Show all departments and their employees, including departments with no employees.',
+    question_answer: 'SELECT e.name, d.department_name FROM employees e RIGHT JOIN departments d ON e.department_id = d.id;'
+  },
+  {
+    category_id: 2, title: 'FULL OUTER JOIN', description: 'All rows from both tables when matched or not.',
+    sql_code: 'SELECT e.name, d.department_name\nFROM employees e\nFULL OUTER JOIN departments d ON e.department_id = d.id;',
+    mysql_code: 'SELECT e.name, d.department_name\nFROM employees e\nLEFT JOIN departments d ON e.department_id = d.id\nUNION\nSELECT e.name, d.department_name\nFROM employees e\nRIGHT JOIN departments d ON e.department_id = d.id;',
+    postgres_code: 'SELECT e.name, d.department_name\nFROM employees e\nFULL OUTER JOIN departments d ON e.department_id = d.id;',
+    oracle_code: 'SELECT e.name, d.department_name\nFROM employees e\nFULL OUTER JOIN departments d ON e.department_id = d.id;',
+    explanation: 'FULL OUTER JOIN returns all rows from both tables. Unmatched rows show NULL. MySQL does not support FULL OUTER JOIN directly — use UNION of LEFT and RIGHT JOIN.',
+    result_example: '| name  | department_name |\n|-------|----------------|\n| Alice | Sales          |\n| Bob   | IT             |\n| Eve   | NULL           |\n| NULL  | HR             |',
+    difficulty: 'intermediate',
+    question: 'Show all employees and all departments, even if they don\'t match.',
+    question_answer: 'SELECT e.name, d.department_name FROM employees e FULL OUTER JOIN departments d ON e.department_id = d.id;'
+  },
+  {
+    category_id: 2, title: 'GROUP BY with COUNT', description: 'Group rows and apply aggregate functions.',
+    sql_code: 'SELECT department, COUNT(*) as employee_count\nFROM employees\nGROUP BY department;',
+    mysql_code: 'SELECT department, COUNT(*) as employee_count\nFROM employees\nGROUP BY department;',
+    postgres_code: 'SELECT department, COUNT(*) as employee_count\nFROM employees\nGROUP BY department;',
+    oracle_code: 'SELECT department, COUNT(*) as employee_count\nFROM employees\nGROUP BY department;',
+    explanation: 'GROUP BY collapses rows with same value into one row per group. Aggregate functions operate per group.',
+    result_example: '| department | employee_count |\n|-----------|---------------|\n| Sales     | 5             |\n| IT        | 3             |\n| HR        | 2             |',
+    difficulty: 'intermediate',
+    question: 'Count how many employees are in each department.',
+    question_answer: 'SELECT department, COUNT(*) FROM employees GROUP BY department;'
+  },
+  {
+    category_id: 2, title: 'HAVING Clause', description: 'Filter grouped results (like WHERE for groups).',
+    sql_code: 'SELECT department, AVG(salary) as avg_salary\nFROM employees\nGROUP BY department\nHAVING AVG(salary) > 50000;',
+    mysql_code: 'SELECT department, AVG(salary) as avg_salary\nFROM employees\nGROUP BY department\nHAVING AVG(salary) > 50000;',
+    postgres_code: 'SELECT department, AVG(salary) as avg_salary\nFROM employees\nGROUP BY department\nHAVING AVG(salary) > 50000;',
+    oracle_code: 'SELECT department, AVG(salary) as avg_salary\nFROM employees\nGROUP BY department\nHAVING AVG(salary) > 50000;',
+    explanation: 'HAVING filters after GROUP BY, while WHERE filters before. Use HAVING to filter on aggregate results.',
+    result_example: '| department | avg_salary |\n|-----------|-----------|\n| IT        | 62000     |\n| Sales     | 51000     |',
+    difficulty: 'intermediate',
+    question: 'Show departments where the average salary exceeds 50000.',
+    question_answer: 'SELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) > 50000;'
+  },
+  {
+    category_id: 2, title: 'Subquery in WHERE', description: 'Nested query inside WHERE clause.',
+    sql_code: 'SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);',
+    mysql_code: 'SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);',
+    postgres_code: 'SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);',
+    oracle_code: 'SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);',
+    explanation: 'Subqueries run first (inner query), and the outer query uses its result.',
+    result_example: '| name | salary |\n|------|--------|\n| Bob  | 60000  |\n| Dana | 75000  |',
+    difficulty: 'intermediate',
+    question: 'Find employees earning more than the average salary using a subquery.',
+    question_answer: 'SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);'
+  },
+  {
+    category_id: 2, title: 'IN with Subquery', description: 'Check if value matches any in a subquery result.',
+    sql_code: "SELECT name FROM employees WHERE department_id IN (SELECT id FROM departments WHERE location = 'New York');",
+    mysql_code: "SELECT name FROM employees WHERE department_id IN (SELECT id FROM departments WHERE location = 'New York');",
+    postgres_code: "SELECT name FROM employees WHERE department_id IN (SELECT id FROM departments WHERE location = 'New York');",
+    oracle_code: "SELECT name FROM employees WHERE department_id IN (SELECT id FROM departments WHERE location = 'New York');",
+    explanation: 'IN returns true if the value matches ANY value in the subquery result list.',
+    result_example: '| name  |\n|-------|\n| Alice |\n| Bob   |',
+    difficulty: 'intermediate',
+    question: 'Find employees working in departments located in New York.',
+    question_answer: "SELECT name FROM employees WHERE department_id IN (SELECT id FROM departments WHERE location = 'New York');"
+  },
+  {
+    category_id: 2, title: 'EXISTS Operator', description: 'Check if a subquery returns any rows.',
+    sql_code: 'SELECT d.department_name FROM departments d WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.id);',
+    mysql_code: 'SELECT d.department_name FROM departments d WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.id);',
+    postgres_code: 'SELECT d.department_name FROM departments d WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.id);',
+    oracle_code: 'SELECT d.department_name FROM departments d WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.id);',
+    explanation: 'EXISTS returns true if the subquery has at least one row. Often faster than IN for large datasets.',
+    result_example: '| department_name |\n|----------------|\n| Sales          |\n| IT             |\n| HR             |',
+    difficulty: 'intermediate',
+    question: 'Show departments that have at least one employee using EXISTS.',
+    question_answer: 'SELECT d.department_name FROM departments d WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.id);'
+  },
+
+  // ════════════════════════════════════════════════════════════════
+  // ADVANCED SQL (category_id: 3)
+  // ════════════════════════════════════════════════════════════════
+  {
+    category_id: 3, title: 'ROW_NUMBER() Window Function', description: 'Assign sequential integer to each row within a partition.',
+    sql_code: 'SELECT name, department, salary,\nROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as rank\nFROM employees;',
+    mysql_code: 'SELECT name, department, salary,\nROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as rank\nFROM employees;',
+    postgres_code: 'SELECT name, department, salary,\nROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as rank\nFROM employees;',
+    oracle_code: 'SELECT name, department, salary,\nROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as rank\nFROM employees;',
+    explanation: 'ROW_NUMBER() assigns 1, 2, 3 within each partition. Good for deduplication.',
+    result_example: '| name  | department | salary | rank |\n|-------|-----------|--------|------|\n| Alice | Sales     | 50000  | 1    |\n| Bob   | IT        | 60000  | 1    |',
+    difficulty: 'advanced',
+    question: 'Rank employees by salary within each department using ROW_NUMBER().',
+    question_answer: 'SELECT name, department, salary, ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) FROM employees;'
+  },
+  {
+    category_id: 3, title: 'RANK() and DENSE_RANK()', description: 'Rank rows with or without gaps.',
+    sql_code: 'SELECT name, salary,\nRANK() OVER (ORDER BY salary DESC) as rank,\nDENSE_RANK() OVER (ORDER BY salary DESC) as dense_rank\nFROM employees;',
+    mysql_code: 'SELECT name, salary,\nRANK() OVER (ORDER BY salary DESC) as rank,\nDENSE_RANK() OVER (ORDER BY salary DESC) as dense_rank\nFROM employees;',
+    postgres_code: 'SELECT name, salary,\nRANK() OVER (ORDER BY salary DESC) as rank,\nDENSE_RANK() OVER (ORDER BY salary DESC) as dense_rank\nFROM employees;',
+    oracle_code: 'SELECT name, salary,\nRANK() OVER (ORDER BY salary DESC) as rank,\nDENSE_RANK() OVER (ORDER BY salary DESC) as dense_rank\nFROM employees;',
+    explanation: 'RANK skips numbers after ties (1,1,3). DENSE_RANK does not skip (1,1,2).',
+    result_example: '| name  | salary | rank | dense_rank |\n|-------|--------|------|-----------|\n| Dana  | 75000  | 1    | 1         |\n| Bob   | 60000  | 2    | 2         |',
+    difficulty: 'advanced',
+    question: 'What is the difference between RANK() and DENSE_RANK()?',
+    question_answer: 'RANK() leaves gaps after ties, DENSE_RANK() does not.'
+  },
+  {
+    category_id: 3, title: 'LEAD() and LAG()', description: 'Access previous/next row values.',
+    sql_code: 'SELECT name, salary,\nLAG(salary, 1) OVER (ORDER BY salary) as prev_salary,\nLEAD(salary, 1) OVER (ORDER BY salary) as next_salary\nFROM employees;',
+    mysql_code: 'SELECT name, salary,\nLAG(salary, 1) OVER (ORDER BY salary) as prev_salary,\nLEAD(salary, 1) OVER (ORDER BY salary) as next_salary\nFROM employees;',
+    postgres_code: 'SELECT name, salary,\nLAG(salary, 1) OVER (ORDER BY salary) as prev_salary,\nLEAD(salary, 1) OVER (ORDER BY salary) as next_salary\nFROM employees;',
+    oracle_code: 'SELECT name, salary,\nLAG(salary, 1) OVER (ORDER BY salary) as prev_salary,\nLEAD(salary, 1) OVER (ORDER BY salary) as next_salary\nFROM employees;',
+    explanation: 'LAG accesses a row before current; LEAD accesses a row after. Great for deltas.',
+    result_example: '| name  | salary | prev_salary | next_salary |\n|-------|--------|------------|------------|\n| Alice | 50000  | NULL       | 60000      |\n| Bob   | 60000  | 50000      | 75000      |',
+    difficulty: 'advanced',
+    question: 'Use LAG() to show each employee\'s previous salary in the ordered list.',
+    question_answer: 'SELECT name, salary, LAG(salary) OVER (ORDER BY salary) FROM employees;'
+  },
+  {
+    category_id: 3, title: 'SUM() OVER - Running Total', description: 'Calculate running total with window function.',
+    sql_code: 'SELECT order_date, amount, SUM(amount) OVER (ORDER BY order_date) as running_total FROM orders;',
+    mysql_code: 'SELECT order_date, amount, SUM(amount) OVER (ORDER BY order_date) as running_total FROM orders;',
+    postgres_code: 'SELECT order_date, amount, SUM(amount) OVER (ORDER BY order_date) as running_total FROM orders;',
+    oracle_code: 'SELECT order_date, amount, SUM(amount) OVER (ORDER BY order_date) as running_total FROM orders;',
+    explanation: 'SUM() with OVER creates a cumulative sum. ORDER BY inside OVER determines ordering.',
+    result_example: '| order_date | amount | running_total |\n|-----------|--------|--------------|\n| 2024-01-01| 100    | 100          |\n| 2024-01-02| 150    | 250          |',
+    difficulty: 'advanced',
+    question: 'Calculate a running total of order amounts using a window function.',
+    question_answer: 'SELECT order_date, amount, SUM(amount) OVER (ORDER BY order_date) as running_total FROM orders;'
+  },
+  {
+    category_id: 3, title: 'Common Table Expression (CTE)', description: 'Create temporary named result set.',
+    sql_code: 'WITH high_earners AS (\n  SELECT name, salary FROM employees WHERE salary > 50000\n)\nSELECT * FROM high_earners ORDER BY salary DESC;',
+    mysql_code: 'WITH high_earners AS (\n  SELECT name, salary FROM employees WHERE salary > 50000\n)\nSELECT * FROM high_earners ORDER BY salary DESC;',
+    postgres_code: 'WITH high_earners AS (\n  SELECT name, salary FROM employees WHERE salary > 50000\n)\nSELECT * FROM high_earners ORDER BY salary DESC;',
+    oracle_code: 'WITH high_earners AS (\n  SELECT name, salary FROM employees WHERE salary > 50000\n)\nSELECT * FROM high_earners ORDER BY salary DESC;',
+    explanation: 'CTEs make complex queries readable and reusable. They exist only for the duration of the query.',
+    result_example: '| name | salary |\n|------|--------|\n| Dana | 75000  |\n| Bob  | 60000  |',
+    difficulty: 'advanced',
+    question: 'Use a CTE to find all employees earning more than 50000 and sort them.',
+    question_answer: 'WITH high_earners AS (SELECT * FROM employees WHERE salary > 50000) SELECT * FROM high_earners ORDER BY salary DESC;'
+  },
+  {
+    category_id: 3, title: 'Recursive CTE', description: 'CTE that references itself for hierarchical data.',
+    sql_code: 'WITH RECURSIVE org_chart AS (\n  SELECT id, name, manager_id, 1 as level\n  FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, e.manager_id, oc.level + 1\n  FROM employees e JOIN org_chart oc ON e.manager_id = oc.id\n)\nSELECT * FROM org_chart;',
+    mysql_code: 'WITH RECURSIVE org_chart AS (\n  SELECT id, name, manager_id, 1 as level\n  FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, e.manager_id, oc.level + 1\n  FROM employees e JOIN org_chart oc ON e.manager_id = oc.id\n)\nSELECT * FROM org_chart;',
+    postgres_code: 'WITH RECURSIVE org_chart AS (\n  SELECT id, name, manager_id, 1 as level\n  FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, e.manager_id, oc.level + 1\n  FROM employees e JOIN org_chart oc ON e.manager_id = oc.id\n)\nSELECT * FROM org_chart;',
+    oracle_code: 'WITH org_chart (id, name, manager_id, level) AS (\n  SELECT id, name, manager_id, 1 as level\n  FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, e.manager_id, oc.level + 1\n  FROM employees e JOIN org_chart oc ON e.manager_id = oc.id\n)\nSELECT * FROM org_chart;',
+    explanation: 'Recursive CTEs have an anchor member and a recursive member. Perfect for trees. Oracle omits the RECURSIVE keyword.',
+    result_example: '| id | name   | manager_id | level |\n|----|--------|-----------|-------|\n| 1  | CEO    | NULL      | 1     |\n| 2  | VP Eng | 1         | 2     |',
+    difficulty: 'advanced',
+    question: 'Use a recursive CTE to build an organizational hierarchy.',
+    question_answer: 'WITH RECURSIVE org AS (SELECT id, name, manager_id, 1 as level FROM employees WHERE manager_id IS NULL UNION ALL SELECT e.id, e.name, e.manager_id, org.level+1 FROM employees e JOIN org ON e.manager_id = org.id) SELECT * FROM org;'
+  },
+  {
+    category_id: 3, title: 'PIVOT with CASE', description: 'Transform rows into columns using CASE.',
+    sql_code: "SELECT department,\nSUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) as male_count,\nSUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) as female_count\nFROM employees\nGROUP BY department;",
+    mysql_code: "SELECT department,\nSUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) as male_count,\nSUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) as female_count\nFROM employees\nGROUP BY department;",
+    postgres_code: "SELECT department,\nSUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) as male_count,\nSUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) as female_count\nFROM employees\nGROUP BY department;",
+    oracle_code: "SELECT * FROM (\n  SELECT department, gender, COUNT(*) as cnt FROM employees GROUP BY department, gender\n) PIVOT (SUM(cnt) FOR gender IN ('Male' as male_count, 'Female' as female_count));",
+    explanation: 'PIVOT transforms rows to columns. Oracle has a native PIVOT clause; other DBMS use CASE + aggregation.',
+    result_example: '| department | male_count | female_count |\n|-----------|-----------|-------------|\n| IT        | 2         | 1           |\n| Sales     | 1         | 3           |',
+    difficulty: 'advanced',
+    question: 'Pivot the employees table to show male and female counts per department.',
+    question_answer: "SELECT department, SUM(CASE WHEN gender='Male' THEN 1 ELSE 0 END) as male, SUM(CASE WHEN gender='Female' THEN 1 ELSE 0 END) as female FROM employees GROUP BY department;"
+  },
+  {
+    category_id: 3, title: 'UNION vs UNION ALL', description: 'Combine results from multiple SELECT queries.',
+    sql_code: 'SELECT name FROM employees\nUNION\nSELECT name FROM contractors;',
+    mysql_code: 'SELECT name FROM employees\nUNION\nSELECT name FROM contractors;',
+    postgres_code: 'SELECT name FROM employees\nUNION\nSELECT name FROM contractors;',
+    oracle_code: 'SELECT name FROM employees\nUNION\nSELECT name FROM contractors;',
+    explanation: 'UNION removes duplicates; UNION ALL keeps them. Columns must match in type.',
+    result_example: '| name   |\n|--------|\n| Alice  |\n| Bob    |\n| Charlie|',
+    difficulty: 'advanced',
+    question: 'Combine employee names and contractor names into one list without duplicates.',
+    question_answer: 'SELECT name FROM employees UNION SELECT name FROM contractors;'
+  },
+
+  // ════════════════════════════════════════════════════════════════
+  // DATA DEFINITION (category_id: 4)
+  // ════════════════════════════════════════════════════════════════
+  {
+    category_id: 4, title: 'CREATE TABLE', description: 'Create a new table with columns and constraints.',
+    sql_code: 'CREATE TABLE students (\n  id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL,\n  email TEXT UNIQUE,\n  enrolled_date DATE DEFAULT CURRENT_DATE\n);',
+    mysql_code: 'CREATE TABLE students (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  enrolled_date DATE DEFAULT (CURRENT_DATE)\n);',
+    postgres_code: 'CREATE TABLE students (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  enrolled_date DATE DEFAULT CURRENT_DATE\n);',
+    oracle_code: 'CREATE TABLE students (\n  id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,\n  name VARCHAR2(100) NOT NULL,\n  email VARCHAR2(255) UNIQUE,\n  enrolled_date DATE DEFAULT SYSDATE\n);',
+    explanation: 'Defines a new table. Each column has a name, type, and optional constraints. Syntax varies per DBMS for auto-increment and data types.',
+    result_example: 'Table created successfully.',
+    difficulty: 'basic',
+    question: 'Create a students table with id, name, email, and enrolled_date.',
+    question_answer: 'CREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(255), enrolled_date DATE);'
+  },
+  {
+    category_id: 4, title: 'ALTER TABLE - ADD Column', description: 'Add a new column to an existing table.',
+    sql_code: 'ALTER TABLE students ADD COLUMN phone TEXT;',
+    mysql_code: 'ALTER TABLE students ADD COLUMN phone VARCHAR(20);',
+    postgres_code: 'ALTER TABLE students ADD COLUMN phone VARCHAR(20);',
+    oracle_code: 'ALTER TABLE students ADD phone VARCHAR2(20);',
+    explanation: 'ALTER TABLE modifies existing schema. ADD COLUMN adds a new column.',
+    result_example: 'Column added successfully.',
+    difficulty: 'basic',
+    question: 'Add a phone column to the students table.',
+    question_answer: 'ALTER TABLE students ADD COLUMN phone TEXT;'
+  },
+  {
+    category_id: 4, title: 'ALTER TABLE - DROP Column', description: 'Remove a column from a table.',
+    sql_code: 'ALTER TABLE students DROP COLUMN phone;',
+    mysql_code: 'ALTER TABLE students DROP COLUMN phone;',
+    postgres_code: 'ALTER TABLE students DROP COLUMN phone;',
+    oracle_code: 'ALTER TABLE students DROP COLUMN phone;',
+    explanation: 'DROP COLUMN permanently removes a column and all its data.',
+    result_example: 'Column dropped successfully.',
+    difficulty: 'basic',
+    question: 'Remove the phone column from students.',
+    question_answer: 'ALTER TABLE students DROP COLUMN phone;'
+  },
+  {
+    category_id: 4, title: 'DROP TABLE', description: 'Remove an entire table from the database.',
+    sql_code: 'DROP TABLE IF EXISTS students;',
+    mysql_code: 'DROP TABLE IF EXISTS students;',
+    postgres_code: 'DROP TABLE IF EXISTS students;',
+    oracle_code: 'DROP TABLE students PURGE;',
+    explanation: 'DROP TABLE permanently removes the table and all its data. Oracle uses PURGE to bypass the recycle bin.',
+    result_example: 'Table dropped successfully.',
+    difficulty: 'basic',
+    question: 'Drop the students table if it exists.',
+    question_answer: 'DROP TABLE IF EXISTS students;'
+  },
+  {
+    category_id: 4, title: 'CREATE INDEX', description: 'Create an index for faster queries.',
+    sql_code: 'CREATE INDEX idx_students_email ON students(email);',
+    mysql_code: 'CREATE INDEX idx_students_email ON students(email);',
+    postgres_code: 'CREATE INDEX idx_students_email ON students(email);',
+    oracle_code: 'CREATE INDEX idx_students_email ON students(email);',
+    explanation: 'Indexes speed up SELECT/WHERE/JOIN but slow down writes.',
+    result_example: 'Index created.',
+    difficulty: 'intermediate',
+    question: 'Create an index on the email column of students.',
+    question_answer: 'CREATE INDEX idx_email ON students(email);'
+  },
+  {
+    category_id: 4, title: 'PRIMARY and FOREIGN KEY', description: 'Define constraints for data integrity.',
+    sql_code: 'CREATE TABLE orders (\n  id INTEGER PRIMARY KEY,\n  customer_id INTEGER,\n  amount REAL,\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\n);',
+    mysql_code: 'CREATE TABLE orders (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  customer_id INT,\n  amount DECIMAL(10,2),\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\n);',
+    postgres_code: 'CREATE TABLE orders (\n  id SERIAL PRIMARY KEY,\n  customer_id INTEGER,\n  amount NUMERIC(10,2),\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\n);',
+    oracle_code: 'CREATE TABLE orders (\n  id NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,\n  customer_id NUMBER,\n  amount NUMBER(10,2),\n  CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customers(id)\n);',
+    explanation: 'PRIMARY KEY = unique identifier. FOREIGN KEY ensures referential integrity.',
+    result_example: 'Table created with constraints.',
+    difficulty: 'intermediate',
+    question: 'Create an orders table with a foreign key to customers.',
+    question_answer: 'CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10,2), FOREIGN KEY (customer_id) REFERENCES customers(id));'
+  },
+
+  // ════════════════════════════════════════════════════════════════
+  // SQL FUNCTIONS (category_id: 5)
+  // ════════════════════════════════════════════════════════════════
+  {
+    category_id: 5, title: 'UPPER / LOWER / LENGTH', description: 'String transformation functions.',
+    sql_code: "SELECT UPPER(name) as upper_name, LOWER(department) as lower_dept, LENGTH(name) as name_len FROM employees;",
+    mysql_code: "SELECT UPPER(name) as upper_name, LOWER(department) as lower_dept, LENGTH(name) as name_len FROM employees;",
+    postgres_code: "SELECT UPPER(name) as upper_name, LOWER(department) as lower_dept, LENGTH(name) as name_len FROM employees;",
+    oracle_code: "SELECT UPPER(name) as upper_name, LOWER(department) as lower_dept, LENGTH(name) as name_len FROM employees;",
+    explanation: 'String functions transform text. UPPER/LOWER change case, LENGTH returns character count. LENGTH in Oracle returns bytes — use LENGTHB for bytes or LENGTHC for Unicode.',
+    result_example: '| upper_name | lower_dept | name_len |\n|-----------|-----------|---------|\n| ALICE     | sales     | 5       |\n| BOB       | it        | 3       |',
+    difficulty: 'basic',
+    question: 'Convert employee names to uppercase and departments to lowercase.',
+    question_answer: "SELECT UPPER(name), LOWER(department) FROM employees;"
+  },
+  {
+    category_id: 5, title: 'SUBSTRING and REPLACE', description: 'Extract or replace parts of a string.',
+    sql_code: "SELECT SUBSTRING(name, 1, 3) as short, REPLACE(email, '@old.com', '@new.com') as new_email FROM employees;",
+    mysql_code: "SELECT SUBSTRING(name, 1, 3) as short, REPLACE(email, '@old.com', '@new.com') as new_email FROM employees;",
+    postgres_code: "SELECT SUBSTRING(name, 1, 3) as short, REPLACE(email, '@old.com', '@new.com') as new_email FROM employees;",
+    oracle_code: "SELECT SUBSTR(name, 1, 3) as short, REPLACE(email, '@old.com', '@new.com') as new_email FROM employees;",
+    explanation: 'SUBSTRING extracts a portion. REPLACE substitutes all occurrences. Oracle uses SUBSTR instead of SUBSTRING.',
+    result_example: '| short | new_email    |\n|-------|-------------|\n| Ali   | ali@new.com |\n| Bob   | bob@new.com |',
+    difficulty: 'intermediate',
+    question: 'Extract the first 3 characters of each employee name.',
+    question_answer: "SELECT SUBSTRING(name, 1, 3) FROM employees;"
+  },
+  {
+    category_id: 5, title: 'Date Functions', description: 'Work with date and time values.',
+    sql_code: "SELECT name, EXTRACT(YEAR FROM hire_date) as hire_year FROM employees;",
+    mysql_code: "SELECT name, YEAR(hire_date) as hire_year FROM employees;",
+    postgres_code: "SELECT name, EXTRACT(YEAR FROM hire_date) as hire_year FROM employees;",
+    oracle_code: "SELECT name, EXTRACT(YEAR FROM hire_date) as hire_year FROM employees;\n-- Or: SELECT name, TO_CHAR(hire_date, 'YYYY') as hire_year FROM employees;",
+    explanation: 'EXTRACT pulls parts of a date. MySQL has dedicated YEAR(), MONTH(), etc. functions. Oracle supports both EXTRACT and TO_CHAR.',
+    result_example: '| name  | hire_year |\n|-------|----------|\n| Alice | 2020     |\n| Bob   | 2021     |',
+    difficulty: 'intermediate',
+    question: 'Extract the year from the hire_date column.',
+    question_answer: "SELECT EXTRACT(YEAR FROM hire_date) FROM employees;"
+  },
+  {
+    category_id: 5, title: 'COALESCE - Handle NULLs', description: 'Return the first non-NULL value.',
+    sql_code: "SELECT name, COALESCE(phone, email, 'No Contact') as contact FROM employees;",
+    mysql_code: "SELECT name, COALESCE(phone, email, 'No Contact') as contact FROM employees;\n-- Or: SELECT name, IFNULL(phone, IFNULL(email, 'No Contact')) as contact FROM employees;",
+    postgres_code: "SELECT name, COALESCE(phone, email, 'No Contact') as contact FROM employees;",
+    oracle_code: "SELECT name, COALESCE(phone, email, 'No Contact') as contact FROM employees;\n-- Or: SELECT name, NVL(NVL(phone, email), 'No Contact') as contact FROM employees;",
+    explanation: 'COALESCE returns the first non-NULL argument. MySQL has IFNULL (2 args only), Oracle has NVL.',
+    result_example: '| name  | contact       |\n|-------|--------------|\n| Alice | 555-0100     |\n| Bob   | bob@email.com|',
+    difficulty: 'basic',
+    question: 'Show the phone number of each employee, or email if phone is NULL, or "No Contact" if both are NULL.',
+    question_answer: "SELECT COALESCE(phone, email, 'No Contact') FROM employees;"
+  },
+  {
+    category_id: 5, title: 'CASE Statement', description: 'Conditional logic within SQL queries.',
+    sql_code: "SELECT name, salary,\nCASE\n  WHEN salary > 70000 THEN 'High'\n  WHEN salary > 50000 THEN 'Medium'\n  ELSE 'Low'\nEND as salary_band\nFROM employees;",
+    mysql_code: "SELECT name, salary,\nCASE\n  WHEN salary > 70000 THEN 'High'\n  WHEN salary > 50000 THEN 'Medium'\n  ELSE 'Low'\nEND as salary_band\nFROM employees;",
+    postgres_code: "SELECT name, salary,\nCASE\n  WHEN salary > 70000 THEN 'High'\n  WHEN salary > 50000 THEN 'Medium'\n  ELSE 'Low'\nEND as salary_band\nFROM employees;",
+    oracle_code: "SELECT name, salary,\nCASE\n  WHEN salary > 70000 THEN 'High'\n  WHEN salary > 50000 THEN 'Medium'\n  ELSE 'Low'\nEND as salary_band\nFROM employees;",
+    explanation: 'CASE is SQL\'s if-then-else. First matching condition wins.',
+    result_example: '| name | salary | salary_band |\n|------|--------|------------|\n| Dana | 75000  | High       |\n| Bob  | 60000  | Medium     |',
+    difficulty: 'intermediate',
+    question: 'Categorize salaries into High (>70000), Medium (>50000), and Low.',
+    question_answer: "SELECT CASE WHEN salary > 70000 THEN 'High' WHEN salary > 50000 THEN 'Medium' ELSE 'Low' END FROM employees;"
+  },
+  {
+    category_id: 5, title: 'CAST - Type Conversion', description: 'Change data type of a value.',
+    sql_code: "SELECT name, CAST(salary AS TEXT) as salary_text FROM employees;",
+    mysql_code: "SELECT name, CAST(salary AS CHAR) as salary_text FROM employees;\n-- Or: SELECT name, CONVERT(salary, CHAR) as salary_text FROM employees;",
+    postgres_code: "SELECT name, CAST(salary AS TEXT) as salary_text FROM employees;",
+    oracle_code: "SELECT name, CAST(salary AS VARCHAR2(20)) as salary_text FROM employees;\n-- Or: SELECT name, TO_CHAR(salary) as salary_text FROM employees;",
+    explanation: 'CAST converts a value to a specified data type. Oracle also has TO_CHAR/TO_NUMBER/TO_DATE.',
+    result_example: '| name  | salary_text |\n|-------|------------|\n| Alice | 50000      |\n| Bob   | 60000      |\n',
+    difficulty: 'basic',
+    question: 'Convert the salary column from numeric to text.',
+    question_answer: "SELECT CAST(salary AS TEXT) FROM employees;"
+  },
+  // ════════════════════════════════════════════════════════════════
+  // SQL INTERVIEW QUESTIONS (category_id: 6) — 99 questions from DataCamp
+  // ════════════════════════════════════════════════════════════════
+  {
+    category_id: 6, title: "What is SQL?",
+    description: "Definition and purpose of Structured Query Language",
+    sql_code: "SQL (Structured Query Language) is a standard programming language for managing and manipulating relational databases.",
+    explanation: "SQL stands for Structured Query Language. It is a programming language designed for interaction with relational database management systems (RDBMS), including fetching, updating, inserting, and removing data from tables.",
+    difficulty: 'interview',
+    question: "What is SQL?",
+    question_answer: "SQL stands for Structured Query Language. It is a programming language designed for interaction with relational database management systems (RDBMS), including fetching, updating, inserting, and removing data from tables."
+  },
+  {
+    category_id: 6, title: "What are SQL dialects? Give some examples.",
+    description: "Different versions and variations of SQL",
+    sql_code: "-- SQL dialects: Microsoft SQL Server (T-SQL), PostgreSQL (PL/pgSQL),\\n-- MySQL, SQLite, Oracle (PL/SQL), MariaDB",
+    explanation: "SQL dialects are various versions of SQL, both free and paid, that share very similar syntax but vary insignificantly in additional functionality. Examples include Microsoft SQL Server (T-SQL), PostgreSQL, MySQL, SQLite, Oracle (PL/SQL), and MariaDB.",
+    difficulty: 'interview',
+    question: "What are SQL dialects? Give some examples.",
+    question_answer: "SQL dialects are various versions of SQL, both free and paid, that share very similar syntax but vary insignificantly in additional functionality. Examples include Microsoft SQL Server (T-SQL), PostgreSQL, MySQL, SQLite, Oracle (PL/SQL), and MariaDB."
+  },
+  {
+    category_id: 6, title: "What are the main applications of SQL?",
+    description: "Common use cases for SQL in database management",
+    sql_code: "-- Main SQL applications:\\n-- 1. Create, delete, and update tables\\n-- 2. Access, manipulate, and modify data\\n-- 3. Retrieve and summarize information\\n-- 4. Add or remove rows/columns from tables",
+    explanation: "Using SQL, we can: create, delete, and update tables in a database; access, manipulate, and modify data in a table; retrieve and summarize necessary information from one or several tables; and add or remove certain rows or columns from a table.",
+    difficulty: 'interview',
+    question: "What are the main applications of SQL?",
+    question_answer: "Using SQL, we can: create, delete, and update tables in a database; access, manipulate, and modify data in a table; retrieve and summarize necessary information from one or several tables; and add or remove certain rows or columns from a table."
+  },
+  {
+    category_id: 6, title: "What is an SQL statement?",
+    description: "Definition of an SQL command",
+    sql_code: "-- Examples of SQL statements:\\nSELECT * FROM employees;\\nCREATE TABLE students (id INT, name TEXT);\\nDELETE FROM orders WHERE id = 5;",
+    explanation: "An SQL statement, also known as an SQL command, is a string of characters interpreted by the SQL engine as a legal command and executed accordingly. Examples include SELECT, CREATE, DELETE, DROP, REVOKE, and so on.",
+    difficulty: 'interview',
+    question: "What is an SQL statement?",
+    question_answer: "An SQL statement, also known as an SQL command, is a string of characters interpreted by the SQL engine as a legal command and executed accordingly. Examples include SELECT, CREATE, DELETE, DROP, REVOKE, and so on."
+  },
+  {
+    category_id: 6, title: "What is an SQL query?",
+    description: "Definition and types of SQL queries",
+    sql_code: "-- Data retrieval query\\nSELECT name, salary FROM employees WHERE department = 'IT';\\n\\n-- Data modification query\\nINSERT INTO employees (name, salary) VALUES ('John', 50000);",
+    explanation: "A query is a piece of code written in SQL to access or modify data from a database. There are two types: queries for data retrieval (SELECT with limiting, grouping, ordering, joins) and queries for data modification (CREATE, INSERT, DELETE, UPDATE, RENAME).",
+    difficulty: 'interview',
+    question: "What is an SQL query?",
+    question_answer: "A query is a piece of code written in SQL to access or modify data from a database. There are two types: queries for data retrieval (SELECT with limiting, grouping, ordering, joins) and queries for data modification (CREATE, INSERT, DELETE, UPDATE, RENAME)."
+  },
+  {
+    category_id: 6, title: "What is an SQL subquery?",
+    description: "A query nested inside another query",
+    sql_code: "SELECT name, salary\\nFROM employees\\nWHERE salary > (\\n  SELECT AVG(salary) FROM employees\\n);",
+    explanation: "Also called an inner query, a subquery is a query placed inside another query (outer query). Subqueries may occur in clauses such as SELECT, FROM, WHERE, and UPDATE. The innermost subquery runs first, and its result is passed to the containing query. Multiple levels of nesting are possible.",
+    difficulty: 'interview',
+    question: "What is an SQL subquery?",
+    question_answer: "Also called an inner query, a subquery is a query placed inside another query (outer query). Subqueries may occur in clauses such as SELECT, FROM, WHERE, and UPDATE. The innermost subquery runs first, and its result is passed to the containing query. Multiple levels of nesting are possible."
+  },
+  {
+    category_id: 6, title: "What is an SQL join?",
+    description: "Combining records from multiple tables",
+    sql_code: "SELECT e.name, d.department_name\\nFROM employees e\\nINNER JOIN departments d ON e.department_id = d.id;",
+    explanation: "A join is a clause used to combine and retrieve records from two or more tables based on a related column between them. SQL tables are joined based on the relationship between their columns.",
+    difficulty: 'interview',
+    question: "What is an SQL join?",
+    question_answer: "A join is a clause used to combine and retrieve records from two or more tables based on a related column between them. SQL tables are joined based on the relationship between their columns."
+  },
+  {
+    category_id: 6, title: "What is an SQL comment?",
+    description: "Human-readable explanations in SQL code",
+    sql_code: "-- Single-line comment\\nSELECT * FROM employees;  -- inline comment\\n\\n/*\\n  Multi-line\\n  comment\\n*/",
+    explanation: "An SQL comment is a human-readable clarification of what a particular piece of code does. Single-line comments use a double dash (--), while multi-line comments use /* comment_text */. The SQL engine ignores comments during execution.",
+    difficulty: 'interview',
+    question: "What is an SQL comment?",
+    question_answer: "An SQL comment is a human-readable clarification of what a particular piece of code does. Single-line comments use a double dash (--), while multi-line comments use /* comment_text */. The SQL engine ignores comments during execution."
+  },
+  {
+    category_id: 6, title: "What is an SQL alias?",
+    description: "Temporary name for a table or column",
+    sql_code: "SELECT col_1 AS column_alias\\nFROM table_name AS t;",
+    explanation: "An alias is a temporary name given to a table or column while executing a SQL query. Aliases improve code readability and make it more compact. They are introduced with the AS keyword.",
+    difficulty: 'interview',
+    question: "What is an SQL alias?",
+    question_answer: "An alias is a temporary name given to a table or column while executing a SQL query. Aliases improve code readability and make it more compact. They are introduced with the AS keyword."
+  },
+  {
+    category_id: 6, title: "What types of SQL commands do you know?",
+    description: "Categories of SQL statements",
+    sql_code: "-- DDL (Data Definition Language): CREATE, ALTER, DROP, TRUNCATE\\n-- DML (Data Manipulation Language): SELECT, INSERT, UPDATE, DELETE\\n-- DCL (Data Control Language): GRANT, REVOKE\\n-- TCL (Transaction Control Language): COMMIT, ROLLBACK, SAVEPOINT\\n-- DQL (Data Query Language): SELECT",
+    explanation: "Five types: DDL defines database structure; DML accesses and modifies data; DCL controls user access; TCL manages transactions; DQL performs data queries.",
+    difficulty: 'interview',
+    question: "What types of SQL commands do you know?",
+    question_answer: "Five types: DDL defines database structure; DML accesses and modifies data; DCL controls user access; TCL manages transactions; DQL performs data queries."
+  },
+  {
+    category_id: 6, title: "Give some examples of common SQL commands.",
+    description: "Practical examples of SQL statements by category",
+    sql_code: "-- DDL: CREATE, ALTER TABLE, DROP, TRUNCATE, ADD COLUMN\\n-- DML: UPDATE, DELETE, INSERT\\n-- DCL: GRANT, REVOKE\\n-- TCL: COMMIT, SET TRANSACTION, ROLLBACK, SAVEPOINT\\n-- DQL: SELECT",
+    explanation: "DDL: CREATE, ALTER TABLE, DROP, TRUNCATE, ADD COLUMN. DML: UPDATE, DELETE, INSERT. DCL: GRANT, REVOKE. TCL: COMMIT, SET TRANSACTION, ROLLBACK, SAVEPOINT. DQL: SELECT.",
+    difficulty: 'interview',
+    question: "Give some examples of common SQL commands.",
+    question_answer: "DDL: CREATE, ALTER TABLE, DROP, TRUNCATE, ADD COLUMN. DML: UPDATE, DELETE, INSERT. DCL: GRANT, REVOKE. TCL: COMMIT, SET TRANSACTION, ROLLBACK, SAVEPOINT. DQL: SELECT."
+  },
+  {
+    category_id: 6, title: "What is DBMS, and what types of DBMS do you know?",
+    description: "Database Management System definition and types",
+    sql_code: "-- Types of DBMS:\\n-- Relational (RDBMS): MySQL, PostgreSQL, Oracle\\n-- Hierarchical: IBM IMS\\n-- Network: IDMS\\n-- Graph: Neo4j\\n-- Object-oriented: db4o",
+    explanation: "DBMS stands for Database Management System, a software package for performing operations on stored data. Types include relational (RDBMS), hierarchical, network, graph, and object-oriented, based on how data is organized and structured.",
+    difficulty: 'interview',
+    question: "What is DBMS, and what types of DBMS do you know?",
+    question_answer: "DBMS stands for Database Management System, a software package for performing operations on stored data. Types include relational (RDBMS), hierarchical, network, graph, and object-oriented, based on how data is organized and structured."
+  },
+  {
+    category_id: 6, title: "What is RDBMS? Give some examples.",
+    description: "Relational Database Management System",
+    sql_code: "-- Examples of RDBMS:\\n-- MySQL\\n-- PostgreSQL\\n-- Oracle\\n-- MariaDB\\n-- Microsoft SQL Server",
+    explanation: "RDBMS stands for Relational Database Management System, the most common type of DBMS for working with data in related tables via shared keys. SQL is designed to interact with RDBMS. Examples: MySQL, PostgreSQL, Oracle, MariaDB, SQL Server.",
+    difficulty: 'interview',
+    question: "What is RDBMS? Give some examples.",
+    question_answer: "RDBMS stands for Relational Database Management System, the most common type of DBMS for working with data in related tables via shared keys. SQL is designed to interact with RDBMS. Examples: MySQL, PostgreSQL, Oracle, MariaDB, SQL Server."
+  },
+  {
+    category_id: 6, title: "What are tables and fields in SQL?",
+    description: "Basic database structures",
+    sql_code: "CREATE TABLE employees (\\n  id INT,          -- field/column\\n  name VARCHAR(100), -- field/column\\n  salary DECIMAL     -- field/column\\n);\\n-- The entire structure above is a table",
+    explanation: "A table is an organized set of related data stored in rows and columns. A field is another term for a column of a table.",
+    difficulty: 'interview',
+    question: "What are tables and fields in SQL?",
+    question_answer: "A table is an organized set of related data stored in rows and columns. A field is another term for a column of a table."
+  },
+  {
+    category_id: 6, title: "What types of SQL subqueries do you know?",
+    description: "Classification of subqueries",
+    sql_code: "-- Single-row: returns at most one row\\nSELECT * FROM employees WHERE id = (SELECT MAX(id) FROM employees);\\n\\n-- Multi-row: returns multiple rows\\nSELECT * FROM employees WHERE dept_id IN (SELECT id FROM departments);\\n\\n-- Correlated: references outer query\\nSELECT * FROM employees e WHERE salary > (SELECT AVG(salary) FROM employees WHERE dept_id = e.dept_id);",
+    explanation: "Types: single-row (returns ≤1 row), multi-row (returns ≥2 rows), multi-column (returns ≥2 columns), correlated (references outer query values), nested (subquery inside another subquery).",
+    difficulty: 'interview',
+    question: "What types of SQL subqueries do you know?",
+    question_answer: "Types: single-row (returns ≤1 row), multi-row (returns ≥2 rows), multi-column (returns ≥2 columns), correlated (references outer query values), nested (subquery inside another subquery)."
+  },
+  {
+    category_id: 6, title: "What is a constraint, and why use constraints?",
+    description: "Rules for data integrity in tables",
+    sql_code: "CREATE TABLE employees (\\n  id INT PRIMARY KEY,\\n  email VARCHAR(255) UNIQUE,\\n  name VARCHAR(100) NOT NULL,\\n  salary DECIMAL DEFAULT 0\\n);",
+    explanation: "A constraint is a set of conditions defining the type of data allowed in each column. Constraints ensure data integrity and block undesired actions like duplicate values, null keys, or invalid references.",
+    difficulty: 'interview',
+    question: "What is a constraint, and why use constraints?",
+    question_answer: "A constraint is a set of conditions defining the type of data allowed in each column. Constraints ensure data integrity and block undesired actions like duplicate values, null keys, or invalid references."
+  },
+  {
+    category_id: 6, title: "What SQL constraints do you know?",
+    description: "Common constraint types",
+    sql_code: "-- DEFAULT: provides default value\\n-- UNIQUE: allows only unique values\\n-- NOT NULL: disallows NULL values\\n-- PRIMARY KEY: UNIQUE + NOT NULL\\n-- FOREIGN KEY: links to another table's key",
+    explanation: "DEFAULT (provides default), UNIQUE (unique values only), NOT NULL (no nulls), PRIMARY KEY (unique + not null, identifies each row), FOREIGN KEY (links to primary key in another table).",
+    difficulty: 'interview',
+    question: "What SQL constraints do you know?",
+    question_answer: "DEFAULT (provides default), UNIQUE (unique values only), NOT NULL (no nulls), PRIMARY KEY (unique + not null, identifies each row), FOREIGN KEY (links to primary key in another table)."
+  },
+  {
+    category_id: 6, title: "What types of joins do you know?",
+    description: "SQL join types",
+    sql_code: "-- INNER JOIN: matching records only\\n-- LEFT JOIN: all left + matching right\\n-- RIGHT JOIN: all right + matching left\\n-- FULL JOIN: all records from both tables\\n-- CROSS JOIN: Cartesian product",
+    explanation: "INNER JOIN (matching records only), LEFT JOIN (all left + matching right), RIGHT JOIN (all right + matching left), FULL OUTER JOIN (all records from both), CROSS JOIN (Cartesian product). Note: FULL OUTER JOIN is supported by PostgreSQL, SQL Server, Oracle; MySQL uses UNION patterns; SQLite does not support RIGHT JOIN.",
+    difficulty: 'interview',
+    question: "What types of joins do you know?",
+    question_answer: "INNER JOIN (matching records only), LEFT JOIN (all left + matching right), RIGHT JOIN (all right + matching left), FULL OUTER JOIN (all records from both), CROSS JOIN (Cartesian product). Note: FULL OUTER JOIN is supported by PostgreSQL, SQL Server, Oracle; MySQL uses UNION patterns; SQLite does not support RIGHT JOIN."
+  },
+  {
+    category_id: 6, title: "What is a primary key in SQL?",
+    description: "Unique identifier for each record",
+    sql_code: "CREATE TABLE employees (\\n  id INT PRIMARY KEY,\\n  name VARCHAR(100)\\n);\\n-- Primary key = UNIQUE + NOT NULL, one per table",
+    explanation: "A primary key is a column (or columns) with PRIMARY KEY constraint ensuring unique and non-null values. It uniquely identifies each record. Each table can have at most one primary key (possibly composite). A surrogate key is an artificially generated identifier (e.g., auto-increment integer or UUID).",
+    difficulty: 'interview',
+    question: "What is a primary key in SQL?",
+    question_answer: "A primary key is a column (or columns) with PRIMARY KEY constraint ensuring unique and non-null values. It uniquely identifies each record. Each table can have at most one primary key (possibly composite). A surrogate key is an artificially generated identifier (e.g., auto-increment integer or UUID)."
+  },
+  {
+    category_id: 6, title: "What is a unique key in SQL?",
+    description: "Constraint ensuring unique values",
+    sql_code: "CREATE TABLE users (\\n  id INT PRIMARY KEY,\\n  email VARCHAR(255) UNIQUE\\n);\\n-- Multiple NULLs allowed in PostgreSQL/Oracle/MySQL\\n-- Only one NULL allowed in SQL Server",
+    explanation: "A unique key is a column with the UNIQUE constraint ensuring unique values. Unlike PRIMARY KEY, it allows NULL values. Note: SQL Server allows only one NULL; PostgreSQL, Oracle, and MySQL allow multiple NULLs (since NULL ≠ NULL).",
+    difficulty: 'interview',
+    question: "What is a unique key in SQL?",
+    question_answer: "A unique key is a column with the UNIQUE constraint ensuring unique values. Unlike PRIMARY KEY, it allows NULL values. Note: SQL Server allows only one NULL; PostgreSQL, Oracle, and MySQL allow multiple NULLs (since NULL ≠ NULL)."
+  },
+  {
+    category_id: 6, title: "What is a foreign key in SQL?",
+    description: "Referential integrity between tables",
+    sql_code: "CREATE TABLE orders (\\n  id INT PRIMARY KEY,\\n  customer_id INT,\\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\\n);",
+    explanation: "A foreign key is a column with FOREIGN KEY constraint linking it to the primary key in another table. Foreign keys keep different tables of a database connected and maintain referential integrity.",
+    difficulty: 'interview',
+    question: "What is a foreign key in SQL?",
+    question_answer: "A foreign key is a column with FOREIGN KEY constraint linking it to the primary key in another table. Foreign keys keep different tables of a database connected and maintain referential integrity."
+  },
+  {
+    category_id: 6, title: "What is an SQL index?",
+    description: "Data structure for faster queries",
+    sql_code: "CREATE INDEX idx_employees_email ON employees(email);\\n-- Speeds up SELECT with WHERE on email\\n-- Slows down INSERT/UPDATE/DELETE",
+    explanation: "An index is a special data structure that stores important parts of a table for faster data search and retrieval. Indexes are especially efficient for large databases, significantly enhancing query performance at the cost of slower write operations.",
+    difficulty: 'interview',
+    question: "What is an SQL index?",
+    question_answer: "An index is a special data structure that stores important parts of a table for faster data search and retrieval. Indexes are especially efficient for large databases, significantly enhancing query performance at the cost of slower write operations."
+  },
+  {
+    category_id: 6, title: "What types of indexes do you know?",
+    description: "Index categories",
+    sql_code: "-- Unique index: no duplicates allowed\\n-- Clustered index: defines physical row order, one per table\\n-- Non-clustered index: separate order from physical data, multiple per table",
+    explanation: "Unique index (prevents duplicates), clustered index (defines physical record order, one per table), non-clustered index (maintains separate order from physical data, multiple per table).",
+    difficulty: 'interview',
+    question: "What types of indexes do you know?",
+    question_answer: "Unique index (prevents duplicates), clustered index (defines physical record order, one per table), non-clustered index (maintains separate order from physical data, multiple per table)."
+  },
+  {
+    category_id: 6, title: "What is a schema?",
+    description: "Database structure and organization",
+    sql_code: "-- A schema contains:\\n-- Tables, Views, Indexes\\n-- Stored Procedures, Functions\\n-- Triggers, Sequences\\n-- Access permissions",
+    explanation: "A schema is a collection of database structural elements such as tables, stored procedures, indexes, functions, and triggers. It shows overall database architecture, specifies relationships between objects, and defines access permissions.",
+    difficulty: 'interview',
+    question: "What is a schema?",
+    question_answer: "A schema is a collection of database structural elements such as tables, stored procedures, indexes, functions, and triggers. It shows overall database architecture, specifies relationships between objects, and defines access permissions."
+  },
+  {
+    category_id: 6, title: "What is a SQL operator?",
+    description: "Reserved characters and keywords for operations",
+    sql_code: "SELECT * FROM products\\nWHERE price > 100 AND category = 'Electronics';",
+    explanation: "A SQL operator is a reserved character, combination of characters, or keyword used in SQL queries to perform a specific operation. Operators are commonly used with the WHERE clause to set filtering conditions.",
+    difficulty: 'interview',
+    question: "What is a SQL operator?",
+    question_answer: "A SQL operator is a reserved character, combination of characters, or keyword used in SQL queries to perform a specific operation. Operators are commonly used with the WHERE clause to set filtering conditions."
+  },
+  {
+    category_id: 6, title: "What types of SQL operators do you know?",
+    description: "Categories of operators",
+    sql_code: "-- Arithmetic: +, -, *, /\\n-- Comparison: >, <, =, >=\\n-- Logical: AND, OR, NOT, BETWEEN\\n-- String: %, _ (with LIKE)\\n-- Set: UNION, INTERSECT, EXCEPT",
+    explanation: "Arithmetic (+, -, *, /), Comparison (>, <, =, >=), Compound (+=, -=), Logical (AND, OR, NOT, BETWEEN), String (%, _), Set (UNION, UNION ALL, INTERSECT, EXCEPT/MINUS).",
+    difficulty: 'interview',
+    question: "What types of SQL operators do you know?",
+    question_answer: "Arithmetic (+, -, *, /), Comparison (>, <, =, >=), Compound (+=, -=), Logical (AND, OR, NOT, BETWEEN), String (%, _), Set (UNION, UNION ALL, INTERSECT, EXCEPT/MINUS)."
+  },
+  {
+    category_id: 6, title: "What is a clause?",
+    description: "Condition applied to filter query results",
+    sql_code: "SELECT department, COUNT(*)\\nFROM employees\\nWHERE salary > 50000     -- clause\\nGROUP BY department      -- clause\\nHAVING COUNT(*) > 5;     -- clause",
+    explanation: "A clause is a condition imposed on a SQL query to filter data and obtain the desired result. Examples include WHERE, LIMIT, HAVING, LIKE, AND, OR, ORDER BY, GROUP BY.",
+    difficulty: 'interview',
+    question: "What is a clause?",
+    question_answer: "A clause is a condition imposed on a SQL query to filter data and obtain the desired result. Examples include WHERE, LIMIT, HAVING, LIKE, AND, OR, ORDER BY, GROUP BY."
+  },
+  {
+    category_id: 6, title: "What are some common statements used with the SELECT query?",
+    description: "Clauses and statements used alongside SELECT",
+    sql_code: "SELECT column1, AVG(column2)\\nFROM table\\nJOIN other_table ON table.id = other_table.id\\nWHERE condition\\nGROUP BY column1\\nHAVING AVG(column2) > value\\nORDER BY column1\\nLIMIT 10;",
+    explanation: "Common statements/clauses used with SELECT: FROM, GROUP BY, JOIN, WHERE, ORDER BY, LIMIT, HAVING. They appear in the order: SELECT → FROM → JOIN → ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT.",
+    difficulty: 'interview',
+    question: "What are some common statements used with the SELECT query?",
+    question_answer: "Common statements/clauses used with SELECT: FROM, GROUP BY, JOIN, WHERE, ORDER BY, LIMIT, HAVING. They appear in the order: SELECT → FROM → JOIN → ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT."
+  },
+  {
+    category_id: 6, title: "How do you create a table in SQL?",
+    description: "Using CREATE TABLE statement",
+    sql_code: "CREATE TABLE employees (\\n  id INT PRIMARY KEY,\\n  name VARCHAR(100) NOT NULL,\\n  salary DECIMAL(10,2),\\n  hire_date DATE DEFAULT CURRENT_DATE\\n);",
+    explanation: "Use the CREATE TABLE statement with column definitions. Syntax: CREATE TABLE table_name (col_1 datatype constraints, col_2 datatype constraints, ...).",
+    difficulty: 'interview',
+    question: "How do you create a table in SQL?",
+    question_answer: "Use the CREATE TABLE statement with column definitions. Syntax: CREATE TABLE table_name (col_1 datatype constraints, col_2 datatype constraints, ...)."
+  },
+  {
+    category_id: 6, title: "How to update a table?",
+    description: "Using UPDATE statement to modify data",
+    sql_code: "UPDATE employees\\nSET salary = 60000, department = 'Engineering'\\nWHERE id = 101;",
+    explanation: "Use the UPDATE statement: UPDATE table_name SET col_1 = value_1, col_2 = value_2 WHERE condition. Always use WHERE to avoid updating all rows.",
+    difficulty: 'interview',
+    question: "How to update a table?",
+    question_answer: "Use the UPDATE statement: UPDATE table_name SET col_1 = value_1, col_2 = value_2 WHERE condition. Always use WHERE to avoid updating all rows."
+  },
+  {
+    category_id: 6, title: "How to delete a table from a database?",
+    description: "Using DROP TABLE statement",
+    sql_code: "DROP TABLE IF EXISTS employees;\\n-- Removes table structure and all data permanently",
+    explanation: "Use the DROP TABLE statement: DROP TABLE table_name;. This permanently removes the table and all its data. Add IF EXISTS to avoid errors if the table does not exist.",
+    difficulty: 'interview',
+    question: "How to delete a table from a database?",
+    question_answer: "Use the DROP TABLE statement: DROP TABLE table_name;. This permanently removes the table and all its data. Add IF EXISTS to avoid errors if the table does not exist."
+  },
+  {
+    category_id: 6, title: "How to get the count of records in a table?",
+    description: "Using COUNT aggregate function",
+    sql_code: "SELECT COUNT(*) FROM employees;\\n-- Returns total number of rows\\n\\nSELECT COUNT(department) FROM employees;\\n-- Returns count of non-NULL department values",
+    explanation: "Use the COUNT() aggregate function: SELECT COUNT(*) FROM table_name; returns the total number of rows. COUNT(column) returns the count of non-NULL values in that column.",
+    difficulty: 'interview',
+    question: "How to get the count of records in a table?",
+    question_answer: "Use the COUNT() aggregate function: SELECT COUNT(*) FROM table_name; returns the total number of rows. COUNT(column) returns the count of non-NULL values in that column."
+  },
+  {
+    category_id: 6, title: "How to sort records in a table?",
+    description: "Using ORDER BY clause",
+    sql_code: "SELECT * FROM employees\\nORDER BY salary DESC, name ASC;",
+    explanation: "Use the ORDER BY clause: SELECT * FROM table_name ORDER BY col_1 ASC/DESC. Default ordering is ascending (ASC). Multiple columns can be specified with individual sort directions.",
+    difficulty: 'interview',
+    question: "How to sort records in a table?",
+    question_answer: "Use the ORDER BY clause: SELECT * FROM table_name ORDER BY col_1 ASC/DESC. Default ordering is ascending (ASC). Multiple columns can be specified with individual sort directions."
+  },
+  {
+    category_id: 6, title: "How to select all columns from a table?",
+    description: "Using SELECT * wildcard",
+    sql_code: "SELECT * FROM employees;\\n-- Returns all columns for every row",
+    explanation: "Use the asterisk * with SELECT: SELECT * FROM table_name;. This returns all columns. However, it is better practice to specify only the columns you need for performance and clarity.",
+    difficulty: 'interview',
+    question: "How to select all columns from a table?",
+    question_answer: "Use the asterisk * with SELECT: SELECT * FROM table_name;. This returns all columns. However, it is better practice to specify only the columns you need for performance and clarity."
+  },
+  {
+    category_id: 6, title: "How to select common records from two tables?",
+    description: "Using INTERSECT to find shared records",
+    sql_code: "SELECT id, name FROM employees\\nINTERSECT\\nSELECT id, name FROM former_employees;\\n-- Note: INTERSECT requires same number of columns and compatible types",
+    explanation: "Use the INTERSECT statement: SELECT col1, col2 FROM table_1 INTERSECT SELECT col1, col2 FROM table_2. INTERSECT requires the same number of columns with compatible data types.",
+    difficulty: 'interview',
+    question: "How to select common records from two tables?",
+    question_answer: "Use the INTERSECT statement: SELECT col1, col2 FROM table_1 INTERSECT SELECT col1, col2 FROM table_2. INTERSECT requires the same number of columns with compatible data types."
+  },
+  {
+    category_id: 6, title: "What is the DISTINCT statement, and how do you use it?",
+    description: "Filtering out duplicate values",
+    sql_code: "SELECT DISTINCT department\\nFROM employees;\\n-- Returns unique department names only",
+    explanation: "DISTINCT is used with SELECT to filter out duplicates and return only unique values from a column. Syntax: SELECT DISTINCT col_1 FROM table_name;.",
+    difficulty: 'interview',
+    question: "What is the DISTINCT statement, and how do you use it?",
+    question_answer: "DISTINCT is used with SELECT to filter out duplicates and return only unique values from a column. Syntax: SELECT DISTINCT col_1 FROM table_name;."
+  },
+  {
+    category_id: 6, title: "What are relationships? Give some examples.",
+    description: "Connections between database tables",
+    sql_code: "-- One-to-One: each user has one profile\\n-- One-to-Many: one customer has many orders\\n-- Many-to-Many: students can take many courses, courses have many students",
+    explanation: "Relationships are connections between entities in a database. Examples: One-to-One (user → profile), One-to-Many (customer → orders), Many-to-Many (students ↔ courses).",
+    difficulty: 'interview',
+    question: "What are relationships? Give some examples.",
+    question_answer: "Relationships are connections between entities in a database. Examples: One-to-One (user → profile), One-to-Many (customer → orders), Many-to-Many (students ↔ courses)."
+  },
+  {
+    category_id: 6, title: "What is a NULL value? How is it different from zero or a blank space?",
+    description: "Understanding NULL vs empty values",
+    sql_code: "SELECT * FROM employees\\nWHERE phone IS NULL;\\n-- NULL = absence of data\\n-- Zero = valid numeric value\\n-- Empty string '' = valid string of length 0",
+    explanation: "A NULL value indicates the absence of data for a cell. Zero (0) is a valid numeric value, and an empty string ('') is a legal string of zero length. NULL is neither — it represents unknown or missing data.",
+    difficulty: 'interview',
+    question: "What is a NULL value? How is it different from zero or a blank space?",
+    question_answer: "A NULL value indicates the absence of data for a cell. Zero (0) is a valid numeric value, and an empty string ('') is a legal string of zero length. NULL is neither — it represents unknown or missing data."
+  },
+  {
+    category_id: 6, title: "What is the difference between SQL and NoSQL?",
+    description: "Relational vs non-relational databases",
+    sql_code: "-- SQL: structured tables, predefined schemas, ACID, vertical scaling\\n-- NoSQL: schema-less, unstructured/semi-structured data, BASE, horizontal scaling",
+    explanation: "SQL databases are relational, structured, and use tables with predefined schemas. NoSQL databases are non-relational, schema-less, and designed for unstructured or semi-structured data. SQL emphasizes ACID compliance; NoSQL prioritizes scalability and performance.",
+    difficulty: 'interview',
+    question: "What is the difference between SQL and NoSQL?",
+    question_answer: "SQL databases are relational, structured, and use tables with predefined schemas. NoSQL databases are non-relational, schema-less, and designed for unstructured or semi-structured data. SQL emphasizes ACID compliance; NoSQL prioritizes scalability and performance."
+  },
+  {
+    category_id: 6, title: "What are some common challenges when working with SQL databases?",
+    description: "Typical SQL database difficulties",
+    sql_code: "-- Common challenges:\\n-- 1. Performance tuning for large datasets\\n-- 2. Managing indexing strategies\\n-- 3. Ensuring data integrity with constraints\\n-- 4. Handling concurrent transactions\\n-- 5. Optimizing query execution",
+    explanation: "Common challenges include performance tuning for large datasets, managing indexing strategies, ensuring data integrity with constraints, handling concurrent transactions, and optimizing query execution plans.",
+    difficulty: 'interview',
+    question: "What are some common challenges when working with SQL databases?",
+    question_answer: "Common challenges include performance tuning for large datasets, managing indexing strategies, ensuring data integrity with constraints, handling concurrent transactions, and optimizing query execution plans."
+  },
+  {
+    category_id: 6, title: "What is a Common Table Expression (CTE)?",
+    description: "Temporary named result set within a query",
+    sql_code: "WITH sales_summary AS (\\n  SELECT product_id, SUM(amount) AS total_sales\\n  FROM sales\\n  GROUP BY product_id\\n)\\nSELECT p.product_name, s.total_sales\\nFROM products p\\nJOIN sales_summary s ON p.id = s.product_id\\nWHERE s.total_sales > 10000;",
+    explanation: "A CTE (Common Table Expression) is a temporary named result set referenced within a SELECT, INSERT, UPDATE, or DELETE statement. Defined with the WITH keyword, CTEs improve query readability, allow breaking complex queries into simpler reusable parts, and are especially useful for recursive queries (e.g., hierarchical data like org charts).",
+    difficulty: 'interview',
+    question: "What is a Common Table Expression (CTE)?",
+    question_answer: "A CTE (Common Table Expression) is a temporary named result set referenced within a SELECT, INSERT, UPDATE, or DELETE statement. Defined with the WITH keyword, CTEs improve query readability, allow breaking complex queries into simpler reusable parts, and are especially useful for recursive queries (e.g., hierarchical data like org charts)."
+  },
+  {
+    category_id: 6, title: "What are window functions, and how do they differ from aggregate functions?",
+    description: "Functions that operate on row sets without collapsing",
+    sql_code: "SELECT \\n  order_date,\\n  amount,\\n  SUM(amount) OVER (ORDER BY order_date) AS running_total\\nFROM orders;",
+    explanation: "Window functions perform calculations across a set of rows related to the current row using the OVER() clause, without collapsing results into a single output row like aggregate functions do. Key functions: ROW_NUMBER(), RANK(), DENSE_RANK(), LAG(), LEAD(), SUM() OVER, AVG() OVER.",
+    difficulty: 'interview',
+    question: "What are window functions, and how do they differ from aggregate functions?",
+    question_answer: "Window functions perform calculations across a set of rows related to the current row using the OVER() clause, without collapsing results into a single output row like aggregate functions do. Key functions: ROW_NUMBER(), RANK(), DENSE_RANK(), LAG(), LEAD(), SUM() OVER, AVG() OVER."
+  },
+  {
+    category_id: 6, title: "What is the difference between RANK(), DENSE_RANK(), and ROW_NUMBER()?",
+    description: "Ranking functions behavior with ties",
+    sql_code: "SELECT name, score,\\n  ROW_NUMBER() OVER (ORDER BY score DESC) AS row_num,\\n  RANK() OVER (ORDER BY score DESC) AS rank,\\n  DENSE_RANK() OVER (ORDER BY score DESC) AS dense_rank\\nFROM students;",
+    explanation: "ROW_NUMBER() always assigns unique sequential numbers (1,2,3,4...). RANK() assigns the same rank to ties but skips numbers (1,2,2,4...). DENSE_RANK() assigns the same rank to ties without skipping (1,2,2,3...). Use DENSE_RANK() when finding the \"nth highest\" value where ties share the same position.",
+    difficulty: 'interview',
+    question: "What is the difference between RANK(), DENSE_RANK(), and ROW_NUMBER()?",
+    question_answer: "ROW_NUMBER() always assigns unique sequential numbers (1,2,3,4...). RANK() assigns the same rank to ties but skips numbers (1,2,2,4...). DENSE_RANK() assigns the same rank to ties without skipping (1,2,2,3...). Use DENSE_RANK() when finding the \"nth highest\" value where ties share the same position."
+  },
+  {
+    category_id: 6, title: "What is a function in SQL?",
+    description: "Database object for reusable SQL logic",
+    sql_code: "-- Aggregate function example\\nSELECT AVG(salary) FROM employees;\\n\\n-- Scalar function example\\nSELECT UPPER(name) FROM employees;",
+    explanation: "A function is a database object representing a set of SQL statements frequently used for a certain task. Functions take input parameters, perform calculations or manipulations, and return results. They improve code readability and avoid repetition.",
+    difficulty: 'interview',
+    question: "What is a function in SQL?",
+    question_answer: "A function is a database object representing a set of SQL statements frequently used for a certain task. Functions take input parameters, perform calculations or manipulations, and return results. They improve code readability and avoid repetition."
+  },
+  {
+    category_id: 6, title: "What types of SQL functions do you know?",
+    description: "Categories of SQL functions",
+    sql_code: "-- Aggregate functions: work on multiple records, return single value\\n--   AVG(), SUM(), MIN(), MAX(), COUNT()\\n-- Scalar functions: work on each value, return single value\\n--   UPPER(), LOWER(), LENGTH(), ROUND(), NOW()",
+    explanation: "Aggregate functions work on multiple (usually grouped) records and return a single value per group. Scalar functions work on each individual value and return a single value. Functions can also be built-in (system-defined) or user-defined.",
+    difficulty: 'interview',
+    question: "What types of SQL functions do you know?",
+    question_answer: "Aggregate functions work on multiple (usually grouped) records and return a single value per group. Scalar functions work on each individual value and return a single value. Functions can also be built-in (system-defined) or user-defined."
+  },
+  {
+    category_id: 6, title: "What SQL aggregate functions do you know?",
+    description: "Common aggregate functions",
+    sql_code: "SELECT\\n  AVG(salary) AS avg_salary,\\n  SUM(salary) AS total_salary,\\n  MIN(salary) AS min_salary,\\n  MAX(salary) AS max_salary,\\n  COUNT(*) AS employee_count\\nFROM employees;",
+    explanation: "AVG() returns the average, SUM() returns the sum, MIN() returns the minimum, MAX() returns the maximum, COUNT() returns the number of rows (including those with NULL values when using COUNT(*)).",
+    difficulty: 'interview',
+    question: "What SQL aggregate functions do you know?",
+    question_answer: "AVG() returns the average, SUM() returns the sum, MIN() returns the minimum, MAX() returns the maximum, COUNT() returns the number of rows (including those with NULL values when using COUNT(*))."
+  },
+  {
+    category_id: 6, title: "What SQL scalar functions do you know?",
+    description: "Common scalar functions",
+    sql_code: "SELECT\\n  LENGTH(name) AS name_length,\\n  UPPER(name) AS upper_name,\\n  LOWER(department) AS lower_dept,\\n  ROUND(salary, -3) AS rounded_salary,\\n  NOW() AS current_datetime\\nFROM employees;",
+    explanation: "LEN()/LENGTH() returns string length, UCASE()/UPPER() converts to uppercase, LCASE()/LOWER() converts to lowercase, INITCAP() converts to title case, MID()/SUBSTR() extracts substrings, ROUND() rounds numbers, NOW() returns current date and time.",
+    difficulty: 'interview',
+    question: "What SQL scalar functions do you know?",
+    question_answer: "LEN()/LENGTH() returns string length, UCASE()/UPPER() converts to uppercase, LCASE()/LOWER() converts to lowercase, INITCAP() converts to title case, MID()/SUBSTR() extracts substrings, ROUND() rounds numbers, NOW() returns current date and time."
+  },
+  {
+    category_id: 6, title: "What are case manipulation functions in SQL?",
+    description: "Functions for changing text case",
+    sql_code: "SELECT\\n  UPPER('hello') AS upper_case,\\n  LOWER('WORLD') AS lower_case,\\n  INITCAP('hello world') AS title_case;",
+    explanation: "Case manipulation functions change the case of text data. UCASE()/UPPER() converts to uppercase, LCASE()/LOWER() converts to lowercase, INITCAP() converts to title case (each word starts with a capital letter).",
+    difficulty: 'interview',
+    question: "What are case manipulation functions in SQL?",
+    question_answer: "Case manipulation functions change the case of text data. UCASE()/UPPER() converts to uppercase, LCASE()/LOWER() converts to lowercase, INITCAP() converts to title case (each word starts with a capital letter)."
+  },
+  {
+    category_id: 6, title: "What are character manipulation functions in SQL?",
+    description: "Functions for modifying text data",
+    sql_code: "SELECT\\n  CONCAT(first_name, ' ', last_name) AS full_name,\\n  SUBSTRING(email, 1, 5) AS email_prefix,\\n  REPLACE(phone, '-', '') AS clean_phone,\\n  TRIM('  hello  ') AS trimmed;",
+    explanation: "CONCAT() joins strings, SUBSTRING()/SUBSTR() extracts parts, LENGTH()/LEN() returns length, REPLACE() substitutes substrings, INSTR() finds substring position, LPAD()/RPAD() pads strings, TRIM() removes characters/whitespace from ends.",
+    difficulty: 'interview',
+    question: "What are character manipulation functions in SQL?",
+    question_answer: "CONCAT() joins strings, SUBSTRING()/SUBSTR() extracts parts, LENGTH()/LEN() returns length, REPLACE() substitutes substrings, INSTR() finds substring position, LPAD()/RPAD() pads strings, TRIM() removes characters/whitespace from ends."
+  },
+  {
+    category_id: 6, title: "What is the difference between local and global variables?",
+    description: "Variable scope in SQL",
+    sql_code: "-- Local variable: accessible only within function/procedure\\n-- Global variable: accessible throughout entire program\\n\\n-- In SQL Server:\\nDECLARE @local_var INT = 10;\\nSELECT @@VERSION AS global_var;",
+    explanation: "Local variables can be accessed only inside the function or procedure where they are declared. Global variables are declared outside any function, stored in fixed memory structures, and can be used throughout the entire program.",
+    difficulty: 'interview',
+    question: "What is the difference between local and global variables?",
+    question_answer: "Local variables can be accessed only inside the function or procedure where they are declared. Global variables are declared outside any function, stored in fixed memory structures, and can be used throughout the entire program."
+  },
+  {
+    category_id: 6, title: "What is the difference between SQL and PL/SQL?",
+    description: "SQL vs procedural SQL extension",
+    sql_code: "-- SQL: standard query language\\nSELECT * FROM employees WHERE salary > 50000;\\n\\n-- PL/SQL: procedural extension with loops, conditions, exceptions\\nBEGIN\\n  FOR emp IN (SELECT * FROM employees) LOOP\\n    DBMS_OUTPUT.PUT_LINE(emp.name);\\n  END LOOP;\\nEND;",
+    explanation: "SQL is a standard language for querying and managing relational databases. PL/SQL (Procedural Language/SQL) is Oracle's extension that includes procedural constructs like loops, conditions, and exception handling for complex business logic within the database.",
+    difficulty: 'interview',
+    question: "What is the difference between SQL and PL/SQL?",
+    question_answer: "SQL is a standard language for querying and managing relational databases. PL/SQL (Procedural Language/SQL) is Oracle's extension that includes procedural constructs like loops, conditions, and exception handling for complex business logic within the database."
+  },
+  {
+    category_id: 6, title: "What is the difference between LEFT JOIN and LEFT OUTER JOIN?",
+    description: "LEFT JOIN vs LEFT OUTER JOIN — are they different?",
+    sql_code: "-- These are identical:\\nSELECT * FROM employees e LEFT JOIN departments d ON e.dept_id = d.id;\\nSELECT * FROM employees e LEFT OUTER JOIN departments d ON e.dept_id = d.id;",
+    explanation: "There is no difference. LEFT JOIN and LEFT OUTER JOIN are interchangeable — the OUTER keyword is optional. Both return all records from the left table and matching records from the right table.",
+    difficulty: 'interview',
+    question: "What is the difference between LEFT JOIN and LEFT OUTER JOIN?",
+    question_answer: "There is no difference. LEFT JOIN and LEFT OUTER JOIN are interchangeable — the OUTER keyword is optional. Both return all records from the left table and matching records from the right table."
+  },
+  {
+    category_id: 6, title: "What is indexing in SQL, and how does it improve performance?",
+    description: "How indexes accelerate data retrieval",
+    sql_code: "CREATE INDEX idx_salary ON employees(salary);\\n-- Without index: full table scan\\n-- With index: direct lookup (like book index)\\nSELECT * FROM employees WHERE salary = 75000;",
+    explanation: "Indexing creates a special data structure (like an optimized lookup table) that speeds up data retrieval by allowing the database to find rows more efficiently, reducing full table scans. However, excessive indexing slows down INSERT, UPDATE, and DELETE operations due to index maintenance.",
+    difficulty: 'interview',
+    question: "What is indexing in SQL, and how does it improve performance?",
+    question_answer: "Indexing creates a special data structure (like an optimized lookup table) that speeds up data retrieval by allowing the database to find rows more efficiently, reducing full table scans. However, excessive indexing slows down INSERT, UPDATE, and DELETE operations due to index maintenance."
+  },
+  {
+    category_id: 6, title: "What is a stored procedure, and how is it different from a function?",
+    description: "Precompiled SQL statements vs functions",
+    sql_code: "-- Stored Procedure\\nCREATE PROCEDURE GetHighEarners(@min_salary DECIMAL)\\nAS\\n  SELECT * FROM employees WHERE salary > @min_salary;\\n\\n-- Function\\nCREATE FUNCTION GetTaxRate(@salary DECIMAL)\\nRETURNS DECIMAL\\nAS\\nBEGIN\\n  RETURN @salary * 0.2;\\nEND;",
+    explanation: "A stored procedure is a precompiled set of SQL statements executed as a unit. It can modify data, manage transactions, and return zero or more result sets. Functions must return a value (scalar or table-valued) and are typically restricted from side effects. Exact behavior differs by database system.",
+    difficulty: 'interview',
+    question: "What is a stored procedure, and how is it different from a function?",
+    question_answer: "A stored procedure is a precompiled set of SQL statements executed as a unit. It can modify data, manage transactions, and return zero or more result sets. Functions must return a value (scalar or table-valued) and are typically restricted from side effects. Exact behavior differs by database system."
+  },
+  {
+    category_id: 6, title: "What is the default data ordering with the ORDER BY statement, and how do you change it?",
+    description: "Sorting defaults and customization",
+    sql_code: "SELECT * FROM employees\\nORDER BY salary DESC;  -- Descending order",
+    explanation: "The default ordering is ascending (ASC). Use DESC keyword for descending order. NULLS FIRST/LAST behavior varies by database system.",
+    difficulty: 'interview',
+    question: "What is the default data ordering with the ORDER BY statement, and how do you change it?",
+    question_answer: "The default ordering is ascending (ASC). Use DESC keyword for descending order. NULLS FIRST/LAST behavior varies by database system."
+  },
+  {
+    category_id: 6, title: "What are SQL set operators?",
+    description: "Operators that combine results from multiple queries",
+    sql_code: "-- UNION: combines results, removes duplicates\\n-- UNION ALL: combines results, keeps duplicates\\n-- INTERSECT: returns records from both queries\\n-- EXCEPT/MINUS: returns records from first query only",
+    explanation: "UNION returns records from either query (no duplicates). UNION ALL returns all records including duplicates. INTERSECT returns records common to both queries. EXCEPT (MINUS in MySQL/Oracle) returns records from the first query but not the second.",
+    difficulty: 'interview',
+    question: "What are SQL set operators?",
+    question_answer: "UNION returns records from either query (no duplicates). UNION ALL returns all records including duplicates. INTERSECT returns records common to both queries. EXCEPT (MINUS in MySQL/Oracle) returns records from the first query but not the second."
+  },
+  {
+    category_id: 6, title: "What operator is used in the query for pattern matching?",
+    description: "Using LIKE with wildcards",
+    sql_code: "SELECT * FROM employees\\nWHERE name LIKE 'A%';   -- Names starting with A\\n\\nSELECT * FROM employees\\nWHERE name LIKE '_o_';  -- 3-letter names with 'o' in middle",
+    explanation: "The LIKE operator combined with % and _ wildcards. % represents any number of characters (including zero). _ represents exactly one character.",
+    difficulty: 'interview',
+    question: "What operator is used in the query for pattern matching?",
+    question_answer: "The LIKE operator combined with % and _ wildcards. % represents any number of characters (including zero). _ represents exactly one character."
+  },
+  {
+    category_id: 6, title: "What is the difference between a primary key and a unique key in SQL?",
+    description: "Comparing PK and unique constraints",
+    sql_code: "CREATE TABLE example (\\n  id INT PRIMARY KEY,        -- unique + NOT NULL, one per table\\n  email VARCHAR(255) UNIQUE   -- unique, allows NULL, multiple per table\\n);",
+    explanation: "Both ensure unique values. PRIMARY KEY uniquely identifies each record, combines NOT NULL + UNIQUE, and each table has at most one. UNIQUE KEY prevents duplicates in a column and allows NULL values, and a table can have multiple unique keys.",
+    difficulty: 'interview',
+    question: "What is the difference between a primary key and a unique key in SQL?",
+    question_answer: "Both ensure unique values. PRIMARY KEY uniquely identifies each record, combines NOT NULL + UNIQUE, and each table has at most one. UNIQUE KEY prevents duplicates in a column and allows NULL values, and a table can have multiple unique keys."
+  },
+  {
+    category_id: 6, title: "What is a SQL composite primary key?",
+    description: "Primary key based on multiple columns",
+    sql_code: "CREATE TABLE enrollments (\\n  student_id INT,\\n  course_id INT,\\n  enrollment_date DATE,\\n  PRIMARY KEY (student_id, course_id)  -- composite key\\n);",
+    explanation: "A composite primary key is a primary key based on multiple columns. The combination of values across all columns in the composite key must be unique. In the example, each student-course pairing must be unique.",
+    difficulty: 'interview',
+    question: "What is a SQL composite primary key?",
+    question_answer: "A composite primary key is a primary key based on multiple columns. The combination of values across all columns in the composite key must be unique. In the example, each student-course pairing must be unique."
+  },
+  {
+    category_id: 6, title: "What is the typical order of SQL clauses in a SELECT statement?",
+    description: "Correct clause order in SELECT queries",
+    sql_code: "SELECT column1, aggregate(col2)\\nFROM table1\\nJOIN table2 ON table1.id = table2.id\\nWHERE condition\\nGROUP BY column1\\nHAVING aggregate_condition\\nORDER BY column1\\nLIMIT 10;",
+    explanation: "SELECT → FROM → JOIN → ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT. This is the recommended writing order for SQL queries.",
+    difficulty: 'interview',
+    question: "What is the typical order of SQL clauses in a SELECT statement?",
+    question_answer: "SELECT → FROM → JOIN → ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT. This is the recommended writing order for SQL queries."
+  },
+  {
+    category_id: 6, title: "In which order does the interpreter execute the common statements in the SELECT query?",
+    description: "SQL logical execution order",
+    sql_code: "-- Execution order:\\n-- 1. FROM / JOIN / ON\\n-- 2. WHERE\\n-- 3. GROUP BY\\n-- 4. HAVING\\n-- 5. SELECT\\n-- 6. ORDER BY\\n-- 7. LIMIT / OFFSET (FETCH)",
+    explanation: "FROM → ON → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT/OFFSET (FETCH). This differs from the writing order, which is SELECT → FROM → JOIN → ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT.",
+    difficulty: 'interview',
+    question: "In which order does the interpreter execute the common statements in the SELECT query?",
+    question_answer: "FROM → ON → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT/OFFSET (FETCH). This differs from the writing order, which is SELECT → FROM → JOIN → ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT."
+  },
+  {
+    category_id: 6, title: "What is a view in SQL?",
+    description: "Virtual table based on a query",
+    sql_code: "CREATE VIEW high_salary_employees AS\\nSELECT id, name, department, salary\\nFROM employees\\nWHERE salary > 70000;\\n\\n-- Using the view:\\nSELECT * FROM high_salary_employees;",
+    explanation: "A view is a virtual table containing a subset of data from one or more tables (or other views). Standard views store no data; materialized views do. Views simplify queries, encapsulate logic, and can restrict column/row access through privileges.",
+    difficulty: 'interview',
+    question: "What is a view in SQL?",
+    question_answer: "A view is a virtual table containing a subset of data from one or more tables (or other views). Standard views store no data; materialized views do. Views simplify queries, encapsulate logic, and can restrict column/row access through privileges."
+  },
+  {
+    category_id: 6, title: "Can we create a view based on another view in SQL?",
+    description: "Nested views",
+    sql_code: "CREATE VIEW dept_summary AS\\nSELECT department, COUNT(*) AS emp_count\\nFROM high_salary_employees\\nGROUP BY department;\\n-- This view is based on another view (high_salary_employees)",
+    explanation: "Yes, this is called nested views. However, nested views should be avoided when possible since they become difficult to read and debug.",
+    difficulty: 'interview',
+    question: "Can we create a view based on another view in SQL?",
+    question_answer: "Yes, this is called nested views. However, nested views should be avoided when possible since they become difficult to read and debug."
+  },
+  {
+    category_id: 6, title: "Can we still use a view if the original table is deleted?",
+    description: "View dependency on base tables",
+    sql_code: "DROP TABLE employees;\\n-- The view high_salary_employees will now be invalid\\nSELECT * FROM high_salary_employees;\\n-- Error: table does not exist",
+    explanation: "No. Any views based on that table will become invalid after deleting the base table. Attempting to use such a view will result in an error message.",
+    difficulty: 'interview',
+    question: "Can we still use a view if the original table is deleted?",
+    question_answer: "No. Any views based on that table will become invalid after deleting the base table. Attempting to use such a view will result in an error message."
+  },
+  {
+    category_id: 6, title: "What types of SQL relationships do you know?",
+    description: "Table relationship types",
+    sql_code: "-- One-to-One: users ↔ user_profiles\\n-- One-to-Many: customers (1) ↔ orders (many)\\n-- Many-to-Many: students ↔ courses (via junction table)",
+    explanation: "One-to-One: each record in one table corresponds to exactly one in another. One-to-Many: each record in one table corresponds to many in another. Many-to-Many: each record in both tables corresponds to multiple in the other (requires a junction table).",
+    difficulty: 'interview',
+    question: "What types of SQL relationships do you know?",
+    question_answer: "One-to-One: each record in one table corresponds to exactly one in another. One-to-Many: each record in one table corresponds to many in another. Many-to-Many: each record in both tables corresponds to multiple in the other (requires a junction table)."
+  },
+  {
+    category_id: 6, title: "What are the possible values of a BOOLEAN data field?",
+    description: "Boolean data type values",
+    sql_code: "-- PostgreSQL: TRUE, FALSE, NULL (native BOOLEAN type)\\n-- SQL Server: BIT type, values 1 (true) or 0 (false)\\n-- MySQL: BOOLEAN is alias for TINYINT(1), values 0 or 1",
+    explanation: "In PostgreSQL, BOOLEAN explicitly takes TRUE, FALSE, or NULL. In SQL Server, BIT stores Booleans as 1 (true) or 0 (false). In MySQL, BOOLEAN is an alias for TINYINT(1).",
+    difficulty: 'interview',
+    question: "What are the possible values of a BOOLEAN data field?",
+    question_answer: "In PostgreSQL, BOOLEAN explicitly takes TRUE, FALSE, or NULL. In SQL Server, BIT stores Booleans as 1 (true) or 0 (false). In MySQL, BOOLEAN is an alias for TINYINT(1)."
+  },
+  {
+    category_id: 6, title: "What is normalization in SQL?",
+    description: "Process of reducing data redundancy",
+    sql_code: "-- 1NF: Atomic values, no repeating groups\\n-- 2NF: 1NF + no partial dependencies\\n-- 3NF: 2NF + no transitive dependencies",
+    explanation: "Normalization organizes data to reduce redundancy, dependency, duplication, and inconsistency. 1NF ensures atomic values and no repeating groups. 2NF removes partial dependencies. 3NF removes transitive dependencies. Higher forms (BCNF, 4NF, 5NF) exist but 3NF is typically sufficient.",
+    difficulty: 'interview',
+    question: "What is normalization in SQL?",
+    question_answer: "Normalization organizes data to reduce redundancy, dependency, duplication, and inconsistency. 1NF ensures atomic values and no repeating groups. 2NF removes partial dependencies. 3NF removes transitive dependencies. Higher forms (BCNF, 4NF, 5NF) exist but 3NF is typically sufficient."
+  },
+  {
+    category_id: 6, title: "What is denormalization in SQL?",
+    description: "Opposite of normalization — introducing redundancy",
+    sql_code: "-- Denormalized: order info repeated in each order row\\n-- Instead of separate customers + orders tables\\n-- Faster reads, slower writes, more storage\\nCREATE TABLE orders_denormalized (\\n  order_id INT,\\n  customer_name VARCHAR(100),\\n  customer_email VARCHAR(255),\\n  product_name VARCHAR(100),\\n  order_total DECIMAL\\n);",
+    explanation: "Denormalization is the opposite of normalization. It introduces controlled data redundancy by combining data from multiple tables. It optimizes read performance by avoiding complex joins, useful when read operations are more important than write operations.",
+    difficulty: 'interview',
+    question: "What is denormalization in SQL?",
+    question_answer: "Denormalization is the opposite of normalization. It introduces controlled data redundancy by combining data from multiple tables. It optimizes read performance by avoiding complex joins, useful when read operations are more important than write operations."
+  },
+  {
+    category_id: 6, title: "What is the difference between renaming a column and giving an alias to it?",
+    description: "Permanent rename vs temporary alias",
+    sql_code: "-- Alias (temporary, only in query):\\nSELECT salary AS annual_salary FROM employees;\\n\\n-- Rename (permanent, alters table):\\nALTER TABLE employees RENAME COLUMN salary TO annual_salary;",
+    explanation: "Renaming a column permanently changes its actual name in the original table (using ALTER TABLE ... RENAME COLUMN). Giving an alias gives a temporary name during query execution (using AS keyword) without affecting the actual table structure.",
+    difficulty: 'interview',
+    question: "What is the difference between renaming a column and giving an alias to it?",
+    question_answer: "Renaming a column permanently changes its actual name in the original table (using ALTER TABLE ... RENAME COLUMN). Giving an alias gives a temporary name during query execution (using AS keyword) without affecting the actual table structure."
+  },
+  {
+    category_id: 6, title: "What is the difference between nested and correlated subqueries?",
+    description: "Independent vs dependent subqueries",
+    sql_code: "-- Non-correlated (nested): runs independently\\nSELECT * FROM employees WHERE dept_id IN (\\n  SELECT id FROM departments WHERE location = 'NYC'\\n);\\n\\n-- Correlated: references outer query\\nSELECT * FROM employees e WHERE salary > (\\n  SELECT AVG(salary) FROM employees WHERE dept_id = e.dept_id\\n);",
+    explanation: "A correlated subquery depends on its outer query for execution and references values from it — it runs repeatedly for each row of the outer query. A non-correlated (nested) subquery does not rely on the outer query and can run independently.",
+    difficulty: 'interview',
+    question: "What is the difference between nested and correlated subqueries?",
+    question_answer: "A correlated subquery depends on its outer query for execution and references values from it — it runs repeatedly for each row of the outer query. A non-correlated (nested) subquery does not rely on the outer query and can run independently."
+  },
+  {
+    category_id: 6, title: "What is the difference between clustered and non-clustered indexes?",
+    description: "Physical vs logical index organization",
+    sql_code: "-- Clustered index: defines physical row order (one per table)\\nCREATE CLUSTERED INDEX idx_id ON employees(id);\\n\\n-- Non-clustered index: separate logical order (many per table)\\nCREATE INDEX idx_name ON employees(name);",
+    explanation: "A clustered index defines the physical order of records on disk, and a table can have only one. A non-clustered index maintains a separate order that does not match the physical data order, and a table can have multiple non-clustered indexes.",
+    difficulty: 'interview',
+    question: "What is the difference between clustered and non-clustered indexes?",
+    question_answer: "A clustered index defines the physical order of records on disk, and a table can have only one. A non-clustered index maintains a separate order that does not match the physical data order, and a table can have multiple non-clustered indexes."
+  },
+  {
+    category_id: 6, title: "What is the CASE() function?",
+    description: "SQL if-then-else logic",
+    sql_code: "SELECT name, salary,\\n  CASE\\n    WHEN salary > 70000 THEN 'High'\\n    WHEN salary > 50000 THEN 'Medium'\\n    ELSE 'Low'\\n  END AS salary_band\\nFROM employees;",
+    explanation: "CASE implements if-then-else logic in SQL. It checks conditions sequentially in WHEN clauses and returns the value from the first matching THEN clause. If no condition matches, it returns the ELSE value (or NULL if ELSE is omitted).",
+    difficulty: 'interview',
+    question: "What is the CASE() function?",
+    question_answer: "CASE implements if-then-else logic in SQL. It checks conditions sequentially in WHEN clauses and returns the value from the first matching THEN clause. If no condition matches, it returns the ELSE value (or NULL if ELSE is omitted)."
+  },
+  {
+    category_id: 6, title: "What is the difference between the DELETE and TRUNCATE statements?",
+    description: "DELETE vs TRUNCATE comparison",
+    sql_code: "-- DELETE: row by row, logged, WHERE clause, can ROLLBACK\\nDELETE FROM employees WHERE department = 'Temp';\\n\\n-- TRUNCATE: deallocates pages, minimally logged, all rows, no WHERE\\nTRUNCATE TABLE employees;",
+    explanation: "DELETE is a DML command that removes rows one by one with full logging, supports WHERE clause, and can be rolled back in a transaction. TRUNCATE is a DDL command that removes all rows by deallocating pages (faster), is minimally logged, cannot use WHERE, and is generally irreversible.",
+    difficulty: 'interview',
+    question: "What is the difference between the DELETE and TRUNCATE statements?",
+    question_answer: "DELETE is a DML command that removes rows one by one with full logging, supports WHERE clause, and can be rolled back in a transaction. TRUNCATE is a DDL command that removes all rows by deallocating pages (faster), is minimally logged, cannot use WHERE, and is generally irreversible."
+  },
+  {
+    category_id: 6, title: "What is the difference between the DROP and TRUNCATE statements?",
+    description: "DROP vs TRUNCATE comparison",
+    sql_code: "-- DROP: removes entire table structure + data + metadata\\nDROP TABLE employees;\\n\\n-- TRUNCATE: removes only data, keeps table structure\\nTRUNCATE TABLE employees;\\n-- Table still exists, but empty",
+    explanation: "DROP deletes the table completely — structure, data, constraints, relationships, and access privileges. TRUNCATE deletes only the data while preserving the table structure and constraints. Both are DDL commands.",
+    difficulty: 'interview',
+    question: "What is the difference between the DROP and TRUNCATE statements?",
+    question_answer: "DROP deletes the table completely — structure, data, constraints, relationships, and access privileges. TRUNCATE deletes only the data while preserving the table structure and constraints. Both are DDL commands."
+  },
+  {
+    category_id: 6, title: "What is the difference between the HAVING and WHERE statements?",
+    description: "Filtering rows vs filtering groups",
+    sql_code: "SELECT department, AVG(salary) AS avg_salary\\nFROM employees\\nWHERE salary > 30000              -- filters rows before grouping\\nGROUP BY department\\nHAVING AVG(salary) > 50000;       -- filters groups after aggregation",
+    explanation: "WHERE filters individual rows before GROUP BY. HAVING filters groups after aggregation. WHERE cannot use aggregate functions; HAVING can. The order in a query: WHERE → GROUP BY → HAVING.",
+    difficulty: 'interview',
+    question: "What is the difference between the HAVING and WHERE statements?",
+    question_answer: "WHERE filters individual rows before GROUP BY. HAVING filters groups after aggregation. WHERE cannot use aggregate functions; HAVING can. The order in a query: WHERE → GROUP BY → HAVING."
+  },
+  {
+    category_id: 6, title: "How do you add a record to a table?",
+    description: "Using INSERT INTO statement",
+    sql_code: "INSERT INTO employees (name, department, salary)\\nVALUES ('John Doe', 'Engineering', 75000);",
+    explanation: "Use INSERT INTO with VALUES: INSERT INTO table_name (col1, col2) VALUES (val1, val2);. Column list is optional but recommended for clarity and to avoid errors if the table structure changes.",
+    difficulty: 'interview',
+    question: "How do you add a record to a table?",
+    question_answer: "Use INSERT INTO with VALUES: INSERT INTO table_name (col1, col2) VALUES (val1, val2);. Column list is optional but recommended for clarity and to avoid errors if the table structure changes."
+  },
+  {
+    category_id: 6, title: "How do you delete a record from a table?",
+    description: "Using DELETE statement",
+    sql_code: "DELETE FROM employees\\nWHERE id = 101;\\n\\n-- Delete multiple records:\\nDELETE FROM employees\\nWHERE department = 'Inactive';",
+    explanation: "Use DELETE FROM table_name WHERE condition. This removes all rows satisfying the condition. Always use WHERE to avoid deleting all records.",
+    difficulty: 'interview',
+    question: "How do you delete a record from a table?",
+    question_answer: "Use DELETE FROM table_name WHERE condition. This removes all rows satisfying the condition. Always use WHERE to avoid deleting all records."
+  },
+  {
+    category_id: 6, title: "How do you add a column to a table?",
+    description: "Using ALTER TABLE ADD COLUMN",
+    sql_code: "ALTER TABLE employees\\nADD COLUMN phone VARCHAR(20);",
+    explanation: "Use ALTER TABLE with ADD COLUMN: ALTER TABLE table_name ADD column_name datatype;. Syntax may vary slightly by database system (e.g., COLUMN keyword is optional in some).",
+    difficulty: 'interview',
+    question: "How do you add a column to a table?",
+    question_answer: "Use ALTER TABLE with ADD COLUMN: ALTER TABLE table_name ADD column_name datatype;. Syntax may vary slightly by database system (e.g., COLUMN keyword is optional in some)."
+  },
+  {
+    category_id: 6, title: "How do you rename a column of a table?",
+    description: "Using ALTER TABLE RENAME COLUMN",
+    sql_code: "ALTER TABLE employees\\nRENAME COLUMN phone TO contact_number;",
+    explanation: "Use ALTER TABLE with RENAME COLUMN ... TO ...: ALTER TABLE table_name RENAME COLUMN old_name TO new_name;. Syntax varies by database system.",
+    difficulty: 'interview',
+    question: "How do you rename a column of a table?",
+    question_answer: "Use ALTER TABLE with RENAME COLUMN ... TO ...: ALTER TABLE table_name RENAME COLUMN old_name TO new_name;. Syntax varies by database system."
+  },
+  {
+    category_id: 6, title: "How do you delete a column from a table?",
+    description: "Using ALTER TABLE DROP COLUMN",
+    sql_code: "ALTER TABLE employees\\nDROP COLUMN phone;",
+    explanation: "Use ALTER TABLE with DROP COLUMN: ALTER TABLE table_name DROP COLUMN column_name;. This permanently removes the column and all its data.",
+    difficulty: 'interview',
+    question: "How do you delete a column from a table?",
+    question_answer: "Use ALTER TABLE with DROP COLUMN: ALTER TABLE table_name DROP COLUMN column_name;. This permanently removes the column and all its data."
+  },
+  {
+    category_id: 6, title: "How do you select all even or all odd records in a table?",
+    description: "Filtering by even/odd IDs",
+    sql_code: "-- Even records using MOD:\\nSELECT * FROM employees\\nWHERE MOD(id, 2) = 0;\\n\\n-- Even records using modulo operator:\\nSELECT * FROM employees\\nWHERE id % 2 = 0;\\n\\n-- Odd records:\\nSELECT * FROM employees\\nWHERE MOD(id, 2) <> 0;",
+    explanation: "Use the MOD function (PostgreSQL, MySQL) or % operator (SQL Server, SQLite) to check remainder when dividing by 2. For even: MOD(id, 2) = 0. For odd: MOD(id, 2) <> 0.",
+    difficulty: 'interview',
+    question: "How do you select all even or all odd records in a table?",
+    question_answer: "Use the MOD function (PostgreSQL, MySQL) or % operator (SQL Server, SQLite) to check remainder when dividing by 2. For even: MOD(id, 2) = 0. For odd: MOD(id, 2) <> 0."
+  },
+  {
+    category_id: 6, title: "How to prevent duplicate records when making a query?",
+    description: "Using DISTINCT or unique constraints",
+    sql_code: "-- Method 1: DISTINCT in query\\nSELECT DISTINCT department FROM employees;\\n\\n-- Method 2: UNIQUE constraint prevents duplicates at table level\\nCREATE TABLE users (\\n  id INT PRIMARY KEY,\\n  email VARCHAR(255) UNIQUE\\n);",
+    explanation: "Use the DISTINCT keyword with SELECT to remove duplicates from query results. To prevent duplicates structurally, create a UNIQUE key constraint on the relevant columns.",
+    difficulty: 'interview',
+    question: "How to prevent duplicate records when making a query?",
+    question_answer: "Use the DISTINCT keyword with SELECT to remove duplicates from query results. To prevent duplicates structurally, create a UNIQUE key constraint on the relevant columns."
+  },
+  {
+    category_id: 6, title: "How do you insert many rows in a table?",
+    description: "Multi-row INSERT",
+    sql_code: "INSERT INTO employees (name, department, salary)\\nVALUES\\n  ('Alice', 'Sales', 50000),\\n  ('Bob', 'IT', 60000),\\n  ('Charlie', 'HR', 45000);",
+    explanation: "Use INSERT INTO with multiple value sets separated by commas: INSERT INTO table_name VALUES (val1, val2), (val3, val4), (val5, val6), ...;. This is much more efficient than individual INSERT statements.",
+    difficulty: 'interview',
+    question: "How do you insert many rows in a table?",
+    question_answer: "Use INSERT INTO with multiple value sets separated by commas: INSERT INTO table_name VALUES (val1, val2), (val3, val4), (val5, val6), ...;. This is much more efficient than individual INSERT statements."
+  },
+  {
+    category_id: 6, title: "How do you find the nth highest value in a column of a table?",
+    description: "Finding ranked values with tie handling",
+    sql_code: "-- Using DENSE_RANK() for tie handling:\\nSELECT column_name\\nFROM (\\n  SELECT column_name,\\n    DENSE_RANK() OVER (ORDER BY column_name DESC) AS rnk\\n  FROM table_name\\n) t\\nWHERE rnk = :n;\\n\\n-- For nth row by order (ignoring ties):\\nSELECT DISTINCT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET :n-1;",
+    explanation: "Use DENSE_RANK() window function with ORDER BY DESC and filter WHERE rnk = n for proper tie handling. Alternatively, use ORDER BY DESC with LIMIT 1 OFFSET n-1 (but this ignores ties).",
+    difficulty: 'interview',
+    question: "How do you find the nth highest value in a column of a table?",
+    question_answer: "Use DENSE_RANK() window function with ORDER BY DESC and filter WHERE rnk = n for proper tie handling. Alternatively, use ORDER BY DESC with LIMIT 1 OFFSET n-1 (but this ignores ties)."
+  },
+  {
+    category_id: 6, title: "How do you find the values in a text column that start with a certain letter?",
+    description: "Pattern matching with LIKE",
+    sql_code: "-- Names starting with 'A' (any length):\\nSELECT * FROM employees\\nWHERE name LIKE 'A%';\\n\\n-- Names starting with 'A' with at least 2 letters:\\nSELECT * FROM employees\\nWHERE name LIKE 'A_';",
+    explanation: "Use the LIKE operator: WHERE column LIKE 'A%' finds values starting with A (any length). WHERE column LIKE 'A_' finds values starting with A with at least 2 characters.",
+    difficulty: 'interview',
+    question: "How do you find the values in a text column that start with a certain letter?",
+    question_answer: "Use the LIKE operator: WHERE column LIKE 'A%' finds values starting with A (any length). WHERE column LIKE 'A_' finds values starting with A with at least 2 characters."
+  },
+  {
+    category_id: 6, title: "How do you find the last id in a table?",
+    description: "Finding the maximum ID value",
+    sql_code: "-- Method 1: Using MAX()\\nSELECT MAX(id) AS highest_id FROM employees;\\n\\n-- Method 2: Using ORDER BY with LIMIT\\nSELECT id FROM employees\\nORDER BY id DESC\\nLIMIT 1;",
+    explanation: "Use the MAX() aggregate function: SELECT MAX(id) FROM table_name;. Alternatively, use ORDER BY id DESC with LIMIT 1 (or equivalent for your database system).",
+    difficulty: 'interview',
+    question: "How do you find the last id in a table?",
+    question_answer: "Use the MAX() aggregate function: SELECT MAX(id) FROM table_name;. Alternatively, use ORDER BY id DESC with LIMIT 1 (or equivalent for your database system)."
+  },
+  {
+    category_id: 6, title: "How to select random rows from a table?",
+    description: "Using RAND() with ORDER BY and LIMIT",
+    sql_code: "-- MySQL / SQLite:\\nSELECT * FROM employees\\nORDER BY RAND()\\nLIMIT 5;\\n\\n-- PostgreSQL:\\nSELECT * FROM employees\\nORDER BY RANDOM()\\nLIMIT 5;",
+    explanation: "Use ORDER BY RAND() (MySQL/SQLite) or RANDOM() (PostgreSQL) with LIMIT for the desired number of random rows. Syntax varies by database system — SQL Server uses NEWID() for randomization.",
+    difficulty: 'interview',
+    question: "How to select random rows from a table?",
+    question_answer: "Use ORDER BY RAND() (MySQL/SQLite) or RANDOM() (PostgreSQL) with LIMIT for the desired number of random rows. Syntax varies by database system — SQL Server uses NEWID() for randomization."
+  },
+  {
+    category_id: 6, title: "How do you find and remove duplicate records from a table?",
+    description: "Detecting and deduplicating data",
+    sql_code: "-- Find duplicates:\\nSELECT email, COUNT(*) AS duplicate_count\\nFROM users\\nGROUP BY email\\nHAVING COUNT(*) > 1;\\n\\n-- Remove duplicates (keep one record):\\nWITH duplicates AS (\\n  SELECT id, ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn\\n  FROM users\\n)\\nDELETE FROM users WHERE id IN (SELECT id FROM duplicates WHERE rn > 1);",
+    explanation: "To find duplicates, GROUP BY the suspect columns with HAVING COUNT(*) > 1. To remove duplicates while keeping one record, use a CTE with ROW_NUMBER() PARTITION BY the duplicate columns, ordering by ID, and DELETE where row number > 1.",
+    difficulty: 'interview',
+    question: "How do you find and remove duplicate records from a table?",
+    question_answer: "To find duplicates, GROUP BY the suspect columns with HAVING COUNT(*) > 1. To remove duplicates while keeping one record, use a CTE with ROW_NUMBER() PARTITION BY the duplicate columns, ordering by ID, and DELETE where row number > 1."
+  },
+  {
+    category_id: 6, title: "How do you calculate a running total (cumulative sum)?",
+    description: "Using SUM() OVER window function",
+    sql_code: "-- Simple running total:\\nSELECT transaction_date, amount,\\n  SUM(amount) OVER (ORDER BY transaction_date) AS running_total\\nFROM transactions;\\n\\n-- Running total per category:\\nSELECT customer_id, transaction_date, amount,\\n  SUM(amount) OVER (\\n    PARTITION BY customer_id ORDER BY transaction_date\\n  ) AS customer_running_total\\nFROM transactions;",
+    explanation: "Use SUM() with OVER(ORDER BY column) for a running total. Add PARTITION BY for running totals per category (e.g., per customer). The ORDER BY inside OVER() determines the cumulative order.",
+    difficulty: 'interview',
+    question: "How do you calculate a running total (cumulative sum)?",
+    question_answer: "Use SUM() with OVER(ORDER BY column) for a running total. Add PARTITION BY for running totals per category (e.g., per customer). The ORDER BY inside OVER() determines the cumulative order."
+  },
+  {
+    category_id: 6, title: "How do you find employees who earn more than the average salary in their department?",
+    description: "Correlated subquery or window function approach",
+    sql_code: "-- Correlated subquery:\\nSELECT e.name, e.department, e.salary\\nFROM employees e\\nWHERE e.salary > (\\n  SELECT AVG(salary) FROM employees WHERE department = e.department\\n);\\n\\n-- Window function:\\nSELECT name, department, salary\\nFROM (\\n  SELECT name, department, salary,\\n    AVG(salary) OVER (PARTITION BY department) AS dept_avg\\n  FROM employees\\n) t\\nWHERE salary > dept_avg;",
+    explanation: "Use a correlated subquery comparing each employee's salary to the AVG of their department. Alternatively, use AVG() OVER (PARTITION BY department) as a window function, then filter where salary > dept_avg.",
+    difficulty: 'interview',
+    question: "How do you find employees who earn more than the average salary in their department?",
+    question_answer: "Use a correlated subquery comparing each employee's salary to the AVG of their department. Alternatively, use AVG() OVER (PARTITION BY department) as a window function, then filter where salary > dept_avg."
+  },
+  {
+    category_id: 6, title: "How do you find gaps in a sequence of numbers (e.g., missing invoice numbers)?",
+    description: "Gap analysis using LEAD()",
+    sql_code: "SELECT invoice_number,\\n  LEAD(invoice_number) OVER (ORDER BY invoice_number) AS next_invoice,\\n  LEAD(invoice_number) OVER (ORDER BY invoice_number) - invoice_number - 1 AS gap_size\\nFROM invoices\\nWHERE LEAD(invoice_number) OVER (ORDER BY invoice_number) - invoice_number > 1;",
+    explanation: "Use LEAD() to compare each value with the next. Calculate the difference between consecutive values minus 1 to find gap size. Filter where the gap is greater than 1 to identify gaps in the sequence.",
+    difficulty: 'interview',
+    question: "How do you find gaps in a sequence of numbers (e.g., missing invoice numbers)?",
+    question_answer: "Use LEAD() to compare each value with the next. Calculate the difference between consecutive values minus 1 to find gap size. Filter where the gap is greater than 1 to identify gaps in the sequence."
+  },
+  {
+    category_id: 6, title: "How do you find customers who made purchases in consecutive months?",
+    description: "Consecutive month detection using LAG()",
+    sql_code: "WITH monthly_purchases AS (\\n  SELECT customer_id,\\n    DATE_TRUNC('month', purchase_date) AS purchase_month,\\n    LAG(DATE_TRUNC('month', purchase_date)) OVER (\\n      PARTITION BY customer_id ORDER BY DATE_TRUNC('month', purchase_date)\\n    ) AS prev_month\\n  FROM purchases\\n  GROUP BY customer_id, DATE_TRUNC('month', purchase_date)\\n)\\nSELECT DISTINCT customer_id\\nFROM monthly_purchases\\nWHERE purchase_month = prev_month + INTERVAL '1 month';",
+    explanation: "Use LAG() to access the previous purchase month for each customer. Compare each purchase month to the previous one — if the difference is exactly 1 month, the customer made consecutive monthly purchases.",
+    difficulty: 'interview',
+    question: "How do you find customers who made purchases in consecutive months?",
+    question_answer: "Use LAG() to access the previous purchase month for each customer. Compare each purchase month to the previous one — if the difference is exactly 1 month, the customer made consecutive monthly purchases."
+  },
+  {
+    category_id: 6, title: "How do you pivot data from rows to columns?",
+    description: "Row-to-column transformation with CASE",
+    sql_code: "SELECT product_name,\\n  SUM(CASE WHEN EXTRACT(MONTH FROM sale_date) = 1 THEN amount ELSE 0 END) AS jan_sales,\\n  SUM(CASE WHEN EXTRACT(MONTH FROM sale_date) = 2 THEN amount ELSE 0 END) AS feb_sales,\\n  SUM(CASE WHEN EXTRACT(MONTH FROM sale_date) = 3 THEN amount ELSE 0 END) AS mar_sales\\nFROM sales\\nGROUP BY product_name;",
+    explanation: "Use conditional aggregation with CASE statements inside SUM(). For each target column, use CASE to select values matching that category. Some databases (SQL Server, Oracle) have native PIVOT syntax for this operation.",
+    difficulty: 'interview',
+    question: "How do you pivot data from rows to columns?",
+    question_answer: "Use conditional aggregation with CASE statements inside SUM(). For each target column, use CASE to select values matching that category. Some databases (SQL Server, Oracle) have native PIVOT syntax for this operation."
+  },
+  {
+    category_id: 6, title: "How do you find the top 3 products by sales in each category?",
+    description: "Top-N per group using DENSE_RANK()",
+    sql_code: "WITH ranked_products AS (\\n  SELECT category, product_name,\\n    SUM(sales_amount) AS total_sales,\\n    DENSE_RANK() OVER (\\n      PARTITION BY category ORDER BY SUM(sales_amount) DESC\\n    ) AS sales_rank\\n  FROM sales\\n  GROUP BY category, product_name\\n)\\nSELECT category, product_name, total_sales\\nFROM ranked_products\\nWHERE sales_rank <= 3\\nORDER BY category, sales_rank;",
+    explanation: "Use DENSE_RANK() with PARTITION BY category and ORDER BY SUM(sales) DESC within a CTE. Then filter WHERE sales_rank <= 3 to get the top 3 products per category.",
+    difficulty: 'interview',
+    question: "How do you find the top 3 products by sales in each category?",
+    question_answer: "Use DENSE_RANK() with PARTITION BY category and ORDER BY SUM(sales) DESC within a CTE. Then filter WHERE sales_rank <= 3 to get the top 3 products per category."
+  },
+  {
+    category_id: 6, title: "What are ACID properties in database transactions?",
+    description: "Atomicity, Consistency, Isolation, Durability",
+    sql_code: "BEGIN TRANSACTION;\\nUPDATE accounts SET balance = balance - 100 WHERE account_id = 1;\\nUPDATE accounts SET balance = balance + 100 WHERE account_id = 2;\\nCOMMIT;\\n-- If any step fails, ROLLBACK restores original state",
+    explanation: "ACID: Atomicity (all-or-nothing), Consistency (valid state before and after), Isolation (concurrent transactions don't interfere), Durability (committed changes persist even after system crash). These four properties guarantee reliable database transactions.",
+    difficulty: 'interview',
+    question: "What are ACID properties in database transactions?",
+    question_answer: "ACID: Atomicity (all-or-nothing), Consistency (valid state before and after), Isolation (concurrent transactions don't interfere), Durability (committed changes persist even after system crash). These four properties guarantee reliable database transactions."
+  },
+  {
+    category_id: 6, title: "What is a deadlock, and how do you prevent it?",
+    description: "Circular transaction dependency and prevention",
+    sql_code: "-- Deadlock scenario:\\n-- Transaction A: locks Table X, waits for Table Y\\n-- Transaction B: locks Table Y, waits for Table X\\n-- Neither can proceed\\n\\n-- Prevention: consistent lock ordering\\n-- Trans A: lock X, then Y  -- Trans B: lock X, then Y (same order)",
+    explanation: "A deadlock occurs when two or more transactions wait for each other to release locks, creating a circular dependency. Prevention: consistent lock ordering across all transactions, keep transactions short, use appropriate isolation levels, access only required data, and handle deadlock retries (databases auto-detect and resolve by rolling back one transaction).",
+    difficulty: 'interview',
+    question: "What is a deadlock, and how do you prevent it?",
+    question_answer: "A deadlock occurs when two or more transactions wait for each other to release locks, creating a circular dependency. Prevention: consistent lock ordering across all transactions, keep transactions short, use appropriate isolation levels, access only required data, and handle deadlock retries (databases auto-detect and resolve by rolling back one transaction)."
+  },
+  {
+    category_id: 6, title: "How do you optimize a slow-running SQL query?",
+    description: "Query optimization strategies",
+    sql_code: "-- Instead of:\\nSELECT * FROM employees WHERE YEAR(hire_date) = 2026;\\n\\n-- Use (to leverage index):\\nSELECT * FROM employees WHERE hire_date >= '2026-01-01' AND hire_date < '2027-01-01';",
+    explanation: "Key optimization strategies: add appropriate indexes on WHERE/JOIN/ORDER BY columns; analyze execution plans with EXPLAIN; avoid SELECT *; use JOINs instead of subqueries when possible; limit result sets with LIMIT; avoid functions on indexed columns (use range comparisons instead); consider partitioning for very large tables.",
+    difficulty: 'interview',
+    question: "How do you optimize a slow-running SQL query?",
+    question_answer: "Key optimization strategies: add appropriate indexes on WHERE/JOIN/ORDER BY columns; analyze execution plans with EXPLAIN; avoid SELECT *; use JOINs instead of subqueries when possible; limit result sets with LIMIT; avoid functions on indexed columns (use range comparisons instead); consider partitioning for very large tables."
+  },
+  {
+    category_id: 6, title: "How do you handle NULL values in calculations and comparisons?",
+    description: "NULL-safe operations with COALESCE, NULLIF",
+    sql_code: "SELECT name,\\n  COALESCE(phone, email, 'No contact') AS contact_info,\\n  salary + COALESCE(bonus, 0) AS total_compensation,\\n  CASE WHEN status IS NULL THEN 'Unknown' ELSE status END AS status\\nFROM employees;",
+    explanation: "Use IS NULL / IS NOT NULL for comparisons (not = NULL). COALESCE() returns the first non-NULL value. NULLIF() returns NULL if two values are equal. Use COALESCE to provide defaults in calculations to prevent NULL propagation. Database-specific: ISNULL() (SQL Server), NVL() (Oracle).",
+    difficulty: 'interview',
+    question: "How do you handle NULL values in calculations and comparisons?",
+    question_answer: "Use IS NULL / IS NOT NULL for comparisons (not = NULL). COALESCE() returns the first non-NULL value. NULLIF() returns NULL if two values are equal. Use COALESCE to provide defaults in calculations to prevent NULL propagation. Database-specific: ISNULL() (SQL Server), NVL() (Oracle)."
+  },
+  {
+    category_id: 6, title: "How do you find the longest streak of consecutive login days for a user?",
+    description: "Islands and gaps problem for streak detection",
+    sql_code: "WITH login_groups AS (\\n  SELECT user_id, login_date,\\n    login_date - ROW_NUMBER() OVER (\\n      PARTITION BY user_id ORDER BY login_date\\n    ) * INTERVAL '1 day' AS group_id\\n  FROM user_logins\\n)\\nSELECT user_id,\\n  MIN(login_date) AS streak_start,\\n  MAX(login_date) AS streak_end,\\n  COUNT(*) AS streak_length\\nFROM login_groups\\nGROUP BY user_id, group_id\\nORDER BY streak_length DESC\\nLIMIT 1;",
+    explanation: "Use the \"islands and gaps\" technique: subtract the row number (as days) from each login date — consecutive dates produce the same group_id. Then GROUP BY user_id and group_id to find streaks, and ORDER BY COUNT(*) DESC LIMIT 1 for the longest.",
+    difficulty: 'interview',
+    question: "How do you find the longest streak of consecutive login days for a user?",
+    question_answer: "Use the \"islands and gaps\" technique: subtract the row number (as days) from each login date — consecutive dates produce the same group_id. Then GROUP BY user_id and group_id to find streaks, and ORDER BY COUNT(*) DESC LIMIT 1 for the longest."
+  },
+];
+
+module.exports = { categories, queries };
