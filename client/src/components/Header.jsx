@@ -28,6 +28,9 @@ export default function Header({ searchTerm, onSearchChange, selectedDbms, onDbm
             <a href="#career" className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors" style={{ color: '#14b8a6', border: '1px solid rgba(20,184,166,0.3)' }}>
               🎯 Career
             </a>
+            <a href="#feedback" className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors" style={{ color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)' }}>
+              💬 Feedback
+            </a>
             {DBMS_OPTIONS.map(db => (
               <button
                 key={db.id}

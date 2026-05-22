@@ -7,6 +7,7 @@ import InterviewCard from './components/InterviewCard'
 import Footer from './components/Footer'
 import SqlPlayground from './components/SqlPlayground'
 import CareerCounselling from './components/CareerCounselling'
+import Feedback from './components/Feedback'
 import { categories as dataCategories, queries as dataQueries } from './data'
 
 const DBMS_LABELS = { sqlite: 'SQLite', mysql: 'MySQL', postgres: 'PostgreSQL', oracle: 'Oracle' }
@@ -116,6 +117,8 @@ export default function App() {
         </section>
 
         <CareerCounselling />
+
+        <Feedback />
 
         {selectedQuery && (
           <QueryDetailModal
