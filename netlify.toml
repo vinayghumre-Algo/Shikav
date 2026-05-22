@@ -2,6 +2,9 @@
   command = "cd client && npm install && npm run build"
   publish = "public"
 
+[functions]
+  directory = "netlify/functions"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

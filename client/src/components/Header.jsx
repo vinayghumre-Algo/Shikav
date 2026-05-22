@@ -24,7 +24,10 @@ export default function Header({ searchTerm, onSearchChange, selectedDbms, onDbm
             </div>
           </a>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-3">
+            <a href="#career" className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors" style={{ color: '#14b8a6', border: '1px solid rgba(20,184,166,0.3)' }}>
+              🎯 Career
+            </a>
             {DBMS_OPTIONS.map(db => (
               <button
                 key={db.id}

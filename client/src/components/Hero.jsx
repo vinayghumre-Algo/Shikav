@@ -19,7 +19,7 @@ export default function Hero({ onTryIt }) {
         </h1>
 
         <p className="text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-          Explore 40+ carefully crafted SQL queries with real-world examples across{' '}
+          Explore 138 carefully crafted SQL queries with real-world examples across{' '}
           <span style={{ color: '#22c55e' }}>SQLite</span>,{' '}
           <span style={{ color: '#f59e0b' }}>MySQL</span>,{' '}
           <span style={{ color: '#3b82f6' }}>PostgreSQL</span>, and{' '}
@@ -42,8 +42,8 @@ export default function Hero({ onTryIt }) {
 
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
           {[
-            { value: '40+', label: 'SQL Queries' },
-            { value: '5', label: 'Categories' },
+            { value: '138', label: 'SQL Queries' },
+            { value: '5', label: 'SQL Topics' },
             { value: '4', label: 'DBMS Supported' },
             { value: '100%', label: 'Free' },
           ].map(stat => (
