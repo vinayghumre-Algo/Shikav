@@ -1,10 +1,10 @@
 const categories = [
-  { name: 'SQL Basics', description: 'Fundamental SQL commands to get started with databases', icon: '🌱', level: 1, color: '#22c55e' },
-  { name: 'Intermediate SQL', description: 'Joins, subqueries, aggregation and grouping', icon: '⚡', level: 2, color: '#f59e0b' },
-  { name: 'Advanced SQL', description: 'Window functions, CTEs, optimization & complex queries', icon: '🚀', level: 3, color: '#ef4444' },
-  { name: 'Data Definition', description: 'CREATE, ALTER, DROP tables and schema design', icon: '🏗️', level: 1, color: '#3b82f6' },
-  { name: 'SQL Functions', description: 'String, date, numeric and aggregate functions', icon: '🔧', level: 2, color: '#8b5cf6' },
-  { name: 'SQL Interview Questions', description: 'Common SQL interview questions with answers and examples for 2026', icon: '🎯', level: 1, color: '#a855f7' },
+  { id: 1, name: 'SQL Basics', description: 'Fundamental SQL commands to get started with databases', icon: '🌱', level: 1, color: '#22c55e' },
+  { id: 2, name: 'Intermediate SQL', description: 'Joins, subqueries, aggregation and grouping', icon: '⚡', level: 2, color: '#f59e0b' },
+  { id: 3, name: 'Advanced SQL', description: 'Window functions, CTEs, optimization & complex queries', icon: '🚀', level: 3, color: '#ef4444' },
+  { id: 4, name: 'Data Definition', description: 'CREATE, ALTER, DROP tables and schema design', icon: '🏗️', level: 1, color: '#3b82f6' },
+  { id: 5, name: 'SQL Functions', description: 'String, date, numeric and aggregate functions', icon: '🔧', level: 2, color: '#8b5cf6' },
+  { id: 6, name: 'SQL Interview Questions', description: 'Common SQL interview questions with answers and examples for 2026', icon: '🎯', level: 1, color: '#a855f7' },
 ];
 
 const queries = [
