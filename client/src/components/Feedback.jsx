@@ -4,18 +4,25 @@ function VisitorCounter() {
   const [count, setCount] = useState(null)
 
   useEffect(() => {
+    const cached = localStorage.getItem('visitor_count_cache')
     const counted = sessionStorage.getItem('visitor_counted')
-    if (counted) {
-      fetch('https://api.countapi.xyz/get/shikav-tech/visitors')
-        .then(r => r.json())
-        .then(d => setCount(d.value))
-        .catch(() => {})
-      return
-    }
-    fetch('https://api.countapi.xyz/hit/shikav-tech/visitors')
+    if (cached) setCount(parseInt(cached, 10))
+
+    const doFetch = counted
+      ? fetch('https://api.countapi.xyz/get/shikav-tech/visitors')
+      : fetch('https://api.countapi.xyz/hit/shikav-tech/visitors')
+
+    doFetch
       .then(r => r.json())
-      .then(d => { setCount(d.value); sessionStorage.setItem('visitor_counted', '1') })
-      .catch(() => {})
+      .then(d => {
+        const v = d.value
+        setCount(v)
+        localStorage.setItem('visitor_count_cache', String(v))
+        if (!counted) sessionStorage.setItem('visitor_counted', '1')
+      })
+      .catch(() => {
+        if (!cached) setCount(0)
+      })
   }, [])
 
   if (count === null) return null
@@ -41,10 +48,7 @@ export default function Feedback() {
     setFormError('')
 
     const form = e.target
-    const data = new URLSearchParams()
-    for (const field of form.elements) {
-      if (field.name) data.append(field.name, field.value)
-    }
+    const data = new URLSearchParams(new FormData(form))
 
     try {
       const res = await fetch('/', {
@@ -56,10 +60,11 @@ export default function Feedback() {
         setFormState('success')
         form.reset()
       } else {
-        throw new Error('Submission failed')
+        const text = await res.text().catch(() => '')
+        throw new Error(text || res.statusText)
       }
-    } catch {
-      setFormError('Could not submit. Please try again or email us directly.')
+    } catch (err) {
+      setFormError('Could not submit. Make sure you are on the live site (Netlify Forms only works on the deployed domain).')
       setFormState('idle')
     }
   }
@@ -96,6 +101,7 @@ export default function Feedback() {
         ) : (
           <form onSubmit={handleSubmit} data-netlify="true" name="feedback" className="space-y-4">
             <input type="hidden" name="form-name" value="feedback" />
+            <div hidden><input name="bot-field" /></div>
 
             <div>
               <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--color-text)' }}>
