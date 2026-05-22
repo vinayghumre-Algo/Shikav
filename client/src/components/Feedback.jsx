@@ -51,7 +51,7 @@ export default function Feedback() {
     const data = { name: form.name.value, email: form.email.value, message: form.message.value }
 
     try {
-      const res = await fetch('/.netlify/functions/submit-feedback', {
+      const res = await fetch('/submit-feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

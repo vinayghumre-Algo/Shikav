@@ -26,7 +26,7 @@ export default function CareerCounselling() {
     setLoading(true)
 
     const cat = careerCategories.find(c => c.id === selectedCategory)
-    const endpoint = '/.netlify/functions/ask-ai'
+    const endpoint = '/ask-ai'
 
     try {
       const res = await fetch(endpoint, {
