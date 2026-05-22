@@ -6,14 +6,18 @@
   "scripts": {
     "start": "node server.js",
     "seed": "node seed.js",
-    "build:client": "cd client && npm.cmd run build",
-    "install:all": "npm.cmd install && cd client && npm.cmd install",
-    "setup": "npm.cmd run install:all && npm.cmd run seed && npm.cmd run build:client",
-    "dev": "start cmd /k \"node server.js\" && start cmd /k \"cd client && npm.cmd run dev\""
+    "install": "npm install",
+    "install:client": "cd client && npm install",
+    "build:client": "cd client && npm run build",
+    "build": "npm run install:client && npm run build:client",
+    "dev": "concurrently \"npm run start\" \"cd client && npm run dev\""
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "sql.js": "^1.11.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
