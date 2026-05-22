@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node server.js",
     "seed": "node seed.js",
-    "install": "npm install",
     "install:client": "cd client && npm install",
     "build:client": "cd client && npm run build",
     "build": "npm run install:client && npm run build:client",
