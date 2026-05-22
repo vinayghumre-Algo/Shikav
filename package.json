@@ -9,11 +9,16 @@
     "build:client": "cd client && npm.cmd run build",
     "install:all": "npm.cmd install && cd client && npm.cmd install",
     "setup": "npm.cmd run install:all && npm.cmd run seed && npm.cmd run build:client",
-    "dev": "start cmd /k \"node server.js\" && start cmd /k \"cd client && npm.cmd run dev\""
+    "dev": "start cmd /k \"node server.js\" && start cmd /k \"cd client && npm.cmd run dev\"",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "sql.js": "^1.11.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.93.1"
   }
 }
