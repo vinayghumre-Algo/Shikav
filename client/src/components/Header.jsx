@@ -1,5 +1,11 @@
 import { useTheme } from '../ThemeContext'
 
+const LANG_OPTIONS = [
+  { id: 'sql', label: 'SQL', icon: '🗄️', color: '#22c55e' },
+  { id: 'java', label: 'Java', icon: '☕', color: '#e76f00' },
+  { id: 'dotnet', label: '.NET', icon: '🔷', color: '#512bd4' },
+]
+
 const DBMS_OPTIONS = [
   { id: 'sqlite', label: 'SQLite', color: '#22c55e' },
   { id: 'mysql', label: 'MySQL', color: '#f59e0b' },
@@ -7,7 +13,7 @@ const DBMS_OPTIONS = [
   { id: 'oracle', label: 'Oracle', color: '#ef4444' },
 ]
 
-export default function Header({ searchTerm, onSearchChange, selectedDbms, onDbmsChange }) {
+export default function Header({ searchTerm, onSearchChange, selectedDbms, onDbmsChange, language, onLanguageChange, showDbms }) {
   const { dark, toggleTheme } = useTheme()
 
   return (
@@ -18,33 +24,53 @@ export default function Header({ searchTerm, onSearchChange, selectedDbms, onDbm
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-lg font-bold text-white shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-shadow">
               SK
             </div>
-            <div className="hidden sm:block">
-              <span className="text-lg font-bold gradient-text">Shikav</span>
-              <span className="text-xs ml-2" style={{ color: 'var(--color-text-muted)' }}>by Kavish Ghumre</span>
+            <div className="hidden sm:block leading-tight">
+              <div className="text-lg font-bold gradient-text">Shikav</div>
+              <div className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>by Kavish Ghumre</div>
             </div>
           </a>
 
           <div className="hidden md:flex items-center gap-3">
+            {LANG_OPTIONS.map(l => (
+              <button
+                key={l.id}
+                onClick={() => onLanguageChange(l.id)}
+                className="px-3 py-1.5 text-xs font-medium rounded-lg transition-all"
+                style={{
+                  backgroundColor: language === l.id ? `${l.color}20` : 'transparent',
+                  color: language === l.id ? l.color : 'var(--color-text-muted)',
+                  border: `1px solid ${language === l.id ? l.color + '40' : 'var(--color-border)'}`,
+                }}
+              >
+                {l.icon} {l.label}
+              </button>
+            ))}
+            {showDbms && (
+              <>
+                <div className="w-px h-5" style={{ backgroundColor: 'var(--color-border)' }} />
+                {DBMS_OPTIONS.map(db => (
+                  <button
+                    key={db.id}
+                    onClick={() => onDbmsChange(db.id)}
+                    className="px-2.5 py-1.5 text-xs font-medium rounded-lg transition-all"
+                    style={{
+                      backgroundColor: selectedDbms === db.id ? `${db.color}20` : 'transparent',
+                      color: selectedDbms === db.id ? db.color : 'var(--color-text-muted)',
+                      border: `1px solid ${selectedDbms === db.id ? db.color + '40' : 'var(--color-border)'}`,
+                    }}
+                  >
+                    {db.label}
+                  </button>
+                ))}
+              </>
+            )}
+            <div className="w-px h-5" style={{ backgroundColor: 'var(--color-border)' }} />
             <a href="#career" className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors" style={{ color: '#14b8a6', border: '1px solid rgba(20,184,166,0.3)' }}>
               🎯 Career
             </a>
             <a href="#feedback" className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors" style={{ color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)' }}>
               💬 Feedback
             </a>
-            {DBMS_OPTIONS.map(db => (
-              <button
-                key={db.id}
-                onClick={() => onDbmsChange(db.id)}
-                className="px-2.5 py-1.5 text-xs font-medium rounded-lg transition-all"
-                style={{
-                  backgroundColor: selectedDbms === db.id ? `${db.color}20` : 'transparent',
-                  color: selectedDbms === db.id ? db.color : 'var(--color-text-muted)',
-                  border: `1px solid ${selectedDbms === db.id ? db.color + '40' : 'var(--color-border)'}`,
-                }}
-              >
-                {db.label}
-              </button>
-            ))}
           </div>
 
           <div className="flex items-center gap-3">
@@ -81,7 +107,21 @@ export default function Header({ searchTerm, onSearchChange, selectedDbms, onDbm
         </div>
 
         <div className="flex md:hidden items-center gap-2 pb-3 overflow-x-auto">
-          {DBMS_OPTIONS.map(db => (
+          {LANG_OPTIONS.map(l => (
+            <button
+              key={l.id}
+              onClick={() => onLanguageChange(l.id)}
+              className="px-2.5 py-1 text-xs font-medium rounded-lg whitespace-nowrap transition-all"
+              style={{
+                backgroundColor: language === l.id ? `${l.color}20` : 'transparent',
+                color: language === l.id ? l.color : 'var(--color-text-muted)',
+                border: `1px solid ${language === l.id ? l.color + '40' : 'var(--color-border)'}`,
+              }}
+            >
+              {l.icon} {l.label}
+            </button>
+          ))}
+          {showDbms && DBMS_OPTIONS.map(db => (
             <button
               key={db.id}
               onClick={() => onDbmsChange(db.id)}

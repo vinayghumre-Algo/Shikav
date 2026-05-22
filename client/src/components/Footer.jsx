@@ -10,7 +10,7 @@ export default function Footer() {
               <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}> by Kavish Ghumre</span>
             </div>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
-              Your interactive platform for learning SQL. Master database queries across SQLite, MySQL, PostgreSQL, and Oracle.
+              Your interactive platform for learning SQL, Java, and .NET. Master database queries across SQLite, MySQL, PostgreSQL, and Oracle.
             </p>
           </div>
           <div>

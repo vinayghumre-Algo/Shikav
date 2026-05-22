@@ -1,7 +1,7 @@
 {
   "name": "shikav-sql",
   "version": "1.0.0",
-  "description": "Shikav [by Kavish Ghumre] - Interactive SQL Learning Platform",
+  "description": "Shikav [by Kavish Ghumre] - Interactive SQL, Java & .NET Learning Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

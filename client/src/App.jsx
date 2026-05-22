@@ -8,20 +8,30 @@ import Footer from './components/Footer'
 import SqlPlayground from './components/SqlPlayground'
 import CareerCounselling from './components/CareerCounselling'
 import Feedback from './components/Feedback'
-import { categories as dataCategories, queries as dataQueries } from './data'
+import { categories as sqlCategories, queries as sqlQueries } from './data'
+import { javaCategories, javaQueries } from './javaData'
+import { dotnetCategories, dotnetQueries } from './dotnetData'
 
 const DBMS_LABELS = { sqlite: 'SQLite', mysql: 'MySQL', postgres: 'PostgreSQL', oracle: 'Oracle' }
 
+const LANG_CONFIG = {
+  sql: { label: 'SQL', icon: '🗄️', title: 'Explore SQL Topics', desc: 'Master SQL from fundamentals to advanced concepts with hands-on examples', categories: sqlCategories, queries: sqlQueries, color: '#22c55e' },
+  java: { label: 'Java', icon: '☕', title: 'Explore Java Topics', desc: 'Master Java from fundamentals to advanced concepts with practical code examples', categories: javaCategories, queries: javaQueries, color: '#e76f00' },
+  dotnet: { label: '.NET', icon: '🔷', title: 'Explore .NET Topics', desc: 'Master .NET & C# from fundamentals to advanced concepts with practical examples', categories: dotnetCategories, queries: dotnetQueries, color: '#512bd4' },
+}
+
 export default function App() {
-  const [categories] = useState(dataCategories)
-  const [queries] = useState(dataQueries)
+  const [language, setLanguage] = useState('sql')
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedQuery, setSelectedQuery] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDbms, setSelectedDbms] = useState('sqlite')
   const [showPlayground, setShowPlayground] = useState(false)
 
-  const filteredQueries = queries.filter(q => {
+  const config = LANG_CONFIG[language]
+  const isSql = language === 'sql'
+
+  const filteredQueries = config.queries.filter(q => {
     const mc = !selectedCategory || q.category_id === selectedCategory
     const ms = !searchTerm ||
       q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -30,6 +40,13 @@ export default function App() {
     return mc && ms
   })
 
+  const switchLang = (lang) => {
+    setLanguage(lang)
+    setSelectedCategory(null)
+    setSelectedQuery(null)
+    setSearchTerm('')
+  }
+
   return (
     <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh' }}>
       <Header
@@ -37,22 +54,25 @@ export default function App() {
         onSearchChange={setSearchTerm}
         selectedDbms={selectedDbms}
         onDbmsChange={setSelectedDbms}
+        language={language}
+        onLanguageChange={switchLang}
+        showDbms={isSql}
       />
 
-      <Hero onTryIt={() => setShowPlayground(true)} />
+      <Hero onTryIt={() => setShowPlayground(true)} language={language} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <section id="categories" className="mb-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--color-text)' }}>
-              Explore SQL Topics
+              {config.title}
             </h2>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--color-text-secondary)' }}>
-              Master SQL from fundamentals to advanced concepts with hands-on examples across {Object.keys(DBMS_LABELS).length} database systems
+              {config.desc}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map(cat => (
+            {config.categories.map(cat => (
               <CategoryCard
                 key={cat.id}
                 category={cat}
@@ -68,12 +88,12 @@ export default function App() {
             <div>
               <h2 className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--color-text)' }}>
                 {selectedCategory
-                  ? categories.find(c => c.id === selectedCategory)?.name || 'Queries'
+                  ? config.categories.find(c => c.id === selectedCategory)?.name || 'Queries'
                   : 'All Queries'}
               </h2>
               <p style={{ color: 'var(--color-text-secondary)' }} className="mt-1 text-sm">
-                {filteredQueries.length} {filteredQueries.length === 1 ? 'query' : 'queries'} found
-                {selectedDbms !== 'sqlite' && ` · showing ${DBMS_LABELS[selectedDbms]} syntax`}
+                {filteredQueries.length} {filteredQueries.length === 1 ? 'item' : 'items'} found
+                {isSql && selectedDbms !== 'sqlite' && ` · showing ${DBMS_LABELS[selectedDbms]} syntax`}
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -82,27 +102,30 @@ export default function App() {
                   Clear filter
                 </button>
               )}
-              <button onClick={() => setShowPlayground(true)} className="btn-primary text-sm">
-                Try It Yourself
-              </button>
+              {isSql && (
+                <button onClick={() => setShowPlayground(true)} className="btn-primary text-sm">
+                  Try It Yourself
+                </button>
+              )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {filteredQueries.map(q => (
-              selectedCategory === 6 ? (
+              q.difficulty === 'interview' ? (
                 <InterviewCard
-                  key={q.id}
+                  key={q.title}
                   query={q}
-                  onClick={() => setSelectedQuery(selectedQuery?.id === q.id ? null : q)}
+                  onClick={() => setSelectedQuery(selectedQuery?.title === q.title ? null : q)}
                 />
               ) : (
                 <QueryCard
-                  key={q.id}
+                  key={q.title}
                   query={q}
                   selectedDbms={selectedDbms}
-                  isSelected={selectedQuery?.id === q.id}
-                  onClick={() => setSelectedQuery(selectedQuery?.id === q.id ? null : q)}
+                  isSelected={selectedQuery?.title === q.title}
+                  onClick={() => setSelectedQuery(selectedQuery?.title === q.title ? null : q)}
+                  language={language}
                 />
               )
             ))}
@@ -111,12 +134,12 @@ export default function App() {
           {filteredQueries.length === 0 && (
             <div className="text-center py-16">
               <div className="text-4xl mb-4">🔍</div>
-              <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>No queries found matching your criteria</p>
+              <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>No items found matching your criteria</p>
             </div>
           )}
         </section>
 
-        <CareerCounselling />
+        {language === 'sql' && <CareerCounselling />}
 
         <Feedback />
 
@@ -126,6 +149,7 @@ export default function App() {
             selectedDbms={selectedDbms}
             onClose={() => setSelectedQuery(null)}
             onOpenPlayground={() => setShowPlayground(true)}
+            language={language}
           />
         )}
       </main>
@@ -142,13 +166,15 @@ export default function App() {
   )
 }
 
-function QueryDetailModal({ query, selectedDbms, onClose, onOpenPlayground }) {
+function QueryDetailModal({ query, selectedDbms, onClose, onOpenPlayground, language }) {
   const [copied, setCopied] = useState(false)
   const [showAnswer, setShowAnswer] = useState(false)
   const isInterview = query.difficulty === 'interview'
-  const isSqlCode = query.sql_code && /SELECT|CREATE|INSERT|WITH |DELETE|ALTER|DROP|TRUNCATE|UPDATE|FROM /.test(query.sql_code)
+  const isSql = language === 'sql'
+  const codeLabel = isSql ? 'SQL Query' : 'Code Example'
 
   const getCode = () => {
+    if (!isSql) return query.sql_code
     const map = { sqlite: query.sql_code, mysql: query.mysql_code, postgres: query.postgres_code, oracle: query.oracle_code }
     return map[selectedDbms] || query.sql_code
   }
@@ -162,6 +188,7 @@ function QueryDetailModal({ query, selectedDbms, onClose, onOpenPlayground }) {
   }
 
   const getCodeStyle = () => {
+    if (!isSql) return { borderColor: '#6366f140' }
     const styles = {
       sqlite: { borderColor: '#22c55e40' },
       mysql: { borderColor: '#f59e0b40' },
@@ -184,9 +211,11 @@ function QueryDetailModal({ query, selectedDbms, onClose, onOpenPlayground }) {
               <span className="px-2.5 py-0.5 text-xs font-medium rounded-full text-white" style={{ backgroundColor: query.category_color || '#6366f1' }}>
                 {query.category_name}
               </span>
-              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full" style={{ backgroundColor: 'rgba(168,85,247,0.15)', color: '#a855f7' }}>
-                interview
-              </span>
+              {isInterview && (
+                <span className="px-2.5 py-0.5 text-xs font-medium rounded-full" style={{ backgroundColor: 'rgba(168,85,247,0.15)', color: '#a855f7' }}>
+                  interview
+                </span>
+              )}
             </div>
             <h3 className="text-xl md:text-2xl font-bold" style={{ color: 'var(--color-text)' }}>
               {isInterview ? '❓ ' : ''}{query.title}
@@ -212,39 +241,30 @@ function QueryDetailModal({ query, selectedDbms, onClose, onOpenPlayground }) {
               </h4>
               <p style={{ color: 'var(--color-text-secondary)' }} className="leading-relaxed">{query.explanation}</p>
             </div>
-            {isSqlCode ? (
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium" style={{ color: 'var(--color-text-muted)' }}>SQL Example</span>
-                    <button onClick={handleCopy} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
-                      style={{ color: copied ? '#22c55e' : 'var(--color-text-muted)' }}>
-                      {copied ? (
-                        <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>Copied!</>
-                      ) : (
-                        <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>Copy</>
-                      )}
-                    </button>
-                  </div>
-                  <div className="code-block" style={{ borderColor: '#a855f740' }}>
-                    <pre className="font-mono text-sm whitespace-pre-wrap" style={{ color: 'var(--color-text)' }}>{getCode()}</pre>
-                  </div>
+            {query.sql_code ? (
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium" style={{ color: 'var(--color-text-muted)' }}>Code Example</span>
+                  <button onClick={handleCopy} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                    style={{ color: copied ? '#22c55e' : 'var(--color-text-muted)' }}>
+                    {copied ? (
+                      <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>Copied!</>
+                    ) : (
+                      <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>Copy</>
+                    )}
+                  </button>
                 </div>
-              ) : null
-            }
+                <div className="code-block" style={{ borderColor: '#a855f740' }}>
+                  <pre className="font-mono text-sm whitespace-pre-wrap" style={{ color: 'var(--color-text)' }}>{getCode()}</pre>
+                </div>
+              </div>
+            ) : null}
           </>
         ) : (
           <>
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium" style={{ color: 'var(--color-text-muted)' }}>SQL Query</span>
-                  <span className="text-xs px-2 py-0.5 rounded" style={{
-                    backgroundColor: selectedDbms === 'sqlite' ? '#22c55e20' : selectedDbms === 'mysql' ? '#f59e0b20' : selectedDbms === 'postgres' ? '#3b82f620' : '#ef444420',
-                    color: selectedDbms === 'sqlite' ? '#22c55e' : selectedDbms === 'mysql' ? '#f59e0b' : selectedDbms === 'postgres' ? '#3b82f6' : '#ef4444',
-                  }}>
-                    {selectedDbms === 'sqlite' ? 'SQLite' : selectedDbms === 'mysql' ? 'MySQL' : selectedDbms === 'postgres' ? 'PostgreSQL' : 'Oracle'}
-                  </span>
-                </div>
+                <span className="text-sm font-medium" style={{ color: 'var(--color-text-muted)' }}>{codeLabel}</span>
                 <button onClick={handleCopy} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
                   style={{ color: copied ? '#22c55e' : 'var(--color-text-muted)' }}>
                   {copied ? (
@@ -298,15 +318,17 @@ function QueryDetailModal({ query, selectedDbms, onClose, onOpenPlayground }) {
           </>
         )}
 
-        <div className="flex justify-center pt-2">
-          <button onClick={onOpenPlayground} className="btn-primary text-sm flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Try It Yourself
-          </button>
-        </div>
+        {isSql && (
+          <div className="flex justify-center pt-2">
+            <button onClick={onOpenPlayground} className="btn-primary text-sm flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Try It Yourself
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
